@@ -11,9 +11,10 @@ reservadas = {
     'vazio':'VAZIO',
     'até':'ATE',
     'leia':'LEIA',
-    'escreve':'ESCREVE',
+    'escreva':'ESCREVA',
     'retorna':'RETORNA',
     'inteiro':'INTEIRO',
+    'principal':'PRINCIPAL'
     }
 
 # Lista de Tokens
