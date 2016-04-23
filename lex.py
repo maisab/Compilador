@@ -7,21 +7,21 @@ reservadas = {
     'senão':'SENAO',
     'fim':'FIM',
     'repita':'REPITA',
-    'flutuante': 'FLUTUANTE',
     'vazio':'VAZIO',
     'até':'ATE',
     'leia':'LEIA',
     'escreva':'ESCREVA',
     'retorna':'RETORNA',
-    'inteiro':'INTEIRO',
-    'principal':'PRINCIPAL'
+    'principal':'PRINCIPAL',
+    'inteiro' : 'INTEIRO',
+    'flutuante' : 'FLUTUANTE'
     }
 
 # Lista de Tokens
 tokens = [
     'SOMA', 'SUB', 'MULT', 'DIVISAO', 'IGUAL', 'VIRGULA', 'ATRIBUICAO',
     'MENOR', 'MAIOR', 'MENOR_IGUAL', 'MAIOR_IGUAL', 'ABRE_PAR', 'FECHA_PAR', 'DOIS_PONTOS', 'ID',
-    'NOVA_LINHA', 'N_INTEIRO', 'N_FLUTUANTE'] + list(reservadas.values())
+    'NOVA_LINHA'] + list(reservadas.values())
 
 # Expressões simples
 
@@ -45,12 +45,12 @@ def t_ID(t):
     t.type = reservadas.get(t.value,'ID')
     return t
 
-def t_N_FLUTUANTE(t):
+def t_FLUTUANTE(t):
     r'[0-9]+(\.[0-9]+)(e(\+|\-)?(\d+))?'
     t.value = float(t.value)
     return t
 
-def t_N_INTEIRO(t):
+def t_INTEIRO(t):
     r'\d+'
     t.value = int(t.value)
     return t

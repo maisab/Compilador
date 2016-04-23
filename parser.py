@@ -12,43 +12,48 @@ class Tree:
         return self.type
 
 #uma funcao
-def p_programa_principal(p):
+def p_programa_1(p):
     'programa : principal'
     p[0] = Tree('programa', [p[1]])
 
 #mais de uma funcao
-def p_programa_multiplas(p):
+def p_programa_2(p):
     'programa : func_loop principal'
+    p[0] = Tree('programa', [p[1],p[2]])
+
+#variavel global
+def p_programa_3(p):
+    'programa : declara_var programa'
     p[0] = Tree('programa', [p[1],p[2]])
 
 #funcao principal
 def p_principal(p):
-    'principal : tipo PRINCIPAL ABRE_PAR FECHA_PAR sequencia_decl FIM'
-    p[0] = Tree('principal', [p[1],p[5]])
+    'principal : tipo PRINCIPAL ABRE_PAR FECHA_PAR NOVA_LINHA sequencia_decl FIM'
+    p[0] = Tree('principal', [p[1],p[6]])
 
 #uma funcao
-def p_func_loop_unica(p):
+def p_func_loop_1(p):
     'func_loop : func_decl'
     p[0] = Tree('func_loop', [p[1]])
 
 #mais de uma funcao
-def p_func_loop_multiplas(p):
-    'func_loop : func_decl func_loop'
+def p_func_loop_2(p):
+    'func_loop : func_loop func_decl'
     p[0] = Tree('func_loop', [p[1], p[2]])
 
 #funcao
 def p_func_decl(p):
-    'func_decl : tipo ID ABRE_PAR parametro_decl FECHA_PAR sequencia_decl RETORNA ABRE_PAR ID FECHA_PAR FIM'
-    p[0] = Tree('func_decl', [p[1], p[4],p[6]], [[p[2], p[9]])
+    'func_decl : tipo ID ABRE_PAR parametro_decl FECHA_PAR NOVA_LINHA sequencia_decl FIM NOVA_LINHA'
+    p[0] = Tree('func_decl', [p[1], p[4], p[7]], p[2])
 
 #uma declaracao
-def p_sequencia_decl_declaracao(p):
+def p_sequencia_decl_1(p):
     'sequencia_decl : declaracao'
     p[0] = Tree('sequencia_decl', [p[1]])
 
 #mais de uma declaracao
-def p_sequencia_decl_loop(p):
-    'sequencia_decl : declaracao sequencia_decl'
+def p_sequencia_decl_2(p):
+    'sequencia_decl : sequencia_decl declaracao'
     p[0] = Tree('sequencia_decl', [p[1], p[2]])
 
 def p_declaracao_1(p):
@@ -75,35 +80,72 @@ def p_declaracao_6(p):
     'declaracao : declara_var'
     p[0] = Tree('declaracao', [p[1]])
 
+#retorna em outra parte do codigo
+def p_declaracao_7(p):
+    'declaracao : retorna_decl'
+    p[0] = Tree('declaracao', [p[1]])
+
+def p_retorna_decl_1(p):
+    'retorna_decl : RETORNA ABRE_PAR ID FECHA_PAR'
+    p[0] = Tree('retorna', [], p[3])
+
+def p_retorna_decl_2(p):
+    'retorna_decl : RETORNA ABRE_PAR numero_decl FECHA_PAR'
+    p[0] = Tree('retorna', [p[3]])
+
+def p_numero_1(p):
+    'numero_decl : INTEIRO'
+    p[0] = Tree('numero_decl', [], p[1])
+
+def p_numero_2(p):
+    'numero_decl : FLUTUANTE'
+    p[0] = Tree('numero_decl', [], p[1])
+
 def p_se_decl_1(p):
-    'se_decl : SE exp_decl ENTAO sequencia_decl FIM'
-    p[0] = Tree('se_decl', [p[2], p[4]])
+    'se_decl : SE exp_decl ENTAO NOVA_LINHA sequencia_decl NOVA_LINHA FIM NOVA_LINHA'
+    p[0] = Tree('se_decl', [p[2], p[5]])
 
 def p_se_decl_2(p):
-    'se_decl : SE exp_decl ENTAO sequencia_decl SENAO sequencia_decl FIM'
-    p[0] = Tree('se_decl', [p[2], p[4], p[6]])
+    'se_decl : SE exp_decl ENTAO NOVA_LINHA sequencia_decl NOVA_LINHA SENAO NOVA_LINHA sequencia_decl NOVA_LINHA FIM NOVA_LINHA'
+    p[0] = Tree('se_decl', [p[2], p[5], p[9]])
 
 def p_repita_decl(p):
-    'repita_decl : REPITA seq_decl ATE exp_decl'
-    p[0] = Tree('repita_decl', [p[2], p[4]])
+    'repita_decl : REPITA NOVA_LINHA sequencia_decl ATE exp_decl NOVA_LINHA'
+    p[0] = Tree('repita_decl', [p[3], p[6]])
 
 def p_atribuicao_decl(p):
-    'atribuicao_decl : ID ATRIBUICAO exp_decl'
+    'atribuicao_decl : ID ATRIBUICAO exp_decl NOVA_LINHA'
     p[0] = Tree('atribuicao_decl', [p[3]], p[1])
 
 def p_leia_decl(p):
-    'leia_decl : LEIA ID'
-    p[0] = Tree('leia_decl', [], p[1])
+    'leia_decl : LEIA ABRE_PAR ID FECHA_PAR NOVA_LINHA'
+    p[0] = Tree('leia_decl', [], p[3])
 
-def p_escreva_decl(p):
-    'escreva_decl : ESCREVA exp_decl'
-    p[0] = Tree('leia_decl', [], p[1])
+def p_escreva_decl_1(p):
+    'escreva_decl : ESCREVA ABRE_PAR exp_decl FECHA_PAR NOVA_LINHA'
+    p[0] = Tree('leia_decl', [p[3]])
 
-def p_exp_decl_simples(p):
+def p_escreva_decl_2(p):
+    'escreva_decl : ESCREVA ABRE_PAR chamada_func FECHA_PAR NOVA_LINHA'
+    p[0] = Tree('leia_decl', [p[3]])
+
+def p_chamada_func(p):
+    'chamada_func : ID ABRE_PAR parametro_chama_func FECHA_PAR'
+    p[0] = Tree('chamada_func', [p[3]], p[1])
+
+def p_parametro_chama_func_1(p):
+    'parametro_chama_func : ID'
+    p[0] = Tree('parametro_chama_func', [], p[1])
+
+def p_parametro_chama_func_2(p):
+    'parametro_chama_func : parametro_chama_func ID'
+    p[0] = Tree('parametro_chama_func', [p[1]], p[2])
+
+def p_exp_decl_1(p):
     'exp_decl : simples_exp'
     p[0] = Tree('exp_decl', [p[1]])
 
-def p_exp_decl_composta(p):
+def p_exp_decl_2(p):
     'exp_decl : simples_exp compara_op simples_exp'
     p[0] = Tree('exp_decl', [p[1], p[2], p[3]])
 
@@ -164,30 +206,62 @@ def p_fator_1(p):
     p[0] = Tree('fator', [], p[1])
 
 def p_fator_2(p):
+    'fator : INTEIRO'
+    p[0] = Tree('fator', [], p[1])
+
+def p_fator_3(p):
+    'fator : FLUTUANTE'
+    p[0] = Tree('fator', [], p[1])
+
+def p_fator_4(p):
     'fator : ABRE_PAR exp_decl FECHA_PAR'
     p[0] = Tree('fator', [p[2]])
 
+
 def p_declara_var(p):
-    'declara_var : ID DOIS_PONTOS ID'
-    p[0] = Tree('declara_var', [], [p[1], p[2]])
+    'declara_var : tipo DOIS_PONTOS ID NOVA_LINHA'
+    p[0] = Tree('declara_var', [p[1]], p[3])
 
 def p_parametro_decl_1(p):
-    'parametro_decl : declara_var VIRGULA parametro_decl'
-    p[0] = Tree('parametro_decl', [p[1], p[3]])
+    'parametro_decl : parametro_decl  VIRGULA tipo DOIS_PONTOS ID'
+    p[0] = Tree('parametro_decl', [p[1], p[5]], p[3])
 
 def p_parametro_decl_2(p):
-    'parametro_decl : declara_var'
-    p[0] = Tree('parametro_decl', [p[1]])
+    'parametro_decl : tipo DOIS_PONTOS ID'
+    p[0] = Tree('parametro_decl', [p[1]], p[3])
 
 def p_tipo_1(p):
     'tipo : VAZIO'
     p[0] = Tree('tipo', [], p[1])
 
 def p_tipo_2(p):
-    'tipo : N_INTEIRO'
+    'tipo : INTEIRO'
     p[0] = Tree('tipo', [], p[1])
 
-def p_tipo_2(p):
-    'tipo : N_FLUTUANTE'
+def p_tipo_3(p):
+    'tipo : FLUTUANTE'
     p[0] = Tree('tipo', [], p[1])
 
+def parse_tree(code):
+    parser = yacc.yacc(debug=True)
+    return parser.parse(code)
+
+def p_error(p):
+    if p:
+        print("Erro sintático: '%s', linha %d" % (p.value, p.lineno))
+        #exit(1)
+        p.lexer.skip(1)
+    else:
+        yacc.restart()
+        print('Erro sintático: definições incompletas!')
+        #exit(1)
+        p.lexer.skip(1)
+
+if __name__ == '__main__':
+    import sys
+    parser = yacc.yacc(debug=True)
+    code = open(sys.argv[1])
+    if 'a' in sys.argv:
+        print(parser.parse(code.read()))
+    else:
+        parser.parse(code.read())

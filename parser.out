@@ -1,0 +1,1978 @@
+Created by PLY version 3.8 (http://www.dabeaz.com/ply)
+
+Grammar
+
+Rule 0     S' -> programa
+Rule 1     programa -> principal
+Rule 2     programa -> func_loop principal
+Rule 3     programa -> declara_var programa
+Rule 4     principal -> tipo PRINCIPAL ABRE_PAR FECHA_PAR NOVA_LINHA sequencia_decl FIM
+Rule 5     func_loop -> func_decl
+Rule 6     func_loop -> func_loop func_decl
+Rule 7     func_decl -> tipo ID ABRE_PAR parametro_decl FECHA_PAR NOVA_LINHA sequencia_decl FIM NOVA_LINHA
+Rule 8     sequencia_decl -> declaracao
+Rule 9     sequencia_decl -> sequencia_decl declaracao
+Rule 10    declaracao -> se_decl
+Rule 11    declaracao -> repita_decl
+Rule 12    declaracao -> atribuicao_decl
+Rule 13    declaracao -> leia_decl
+Rule 14    declaracao -> escreva_decl
+Rule 15    declaracao -> declara_var
+Rule 16    declaracao -> retorna_decl
+Rule 17    retorna_decl -> RETORNA ABRE_PAR ID FECHA_PAR
+Rule 18    retorna_decl -> RETORNA ABRE_PAR numero_decl FECHA_PAR
+Rule 19    numero_decl -> INTEIRO
+Rule 20    numero_decl -> FLUTUANTE
+Rule 21    se_decl -> SE exp_decl ENTAO NOVA_LINHA sequencia_decl NOVA_LINHA FIM NOVA_LINHA
+Rule 22    se_decl -> SE exp_decl ENTAO NOVA_LINHA sequencia_decl NOVA_LINHA SENAO NOVA_LINHA sequencia_decl NOVA_LINHA FIM NOVA_LINHA
+Rule 23    repita_decl -> REPITA NOVA_LINHA sequencia_decl ATE exp_decl NOVA_LINHA
+Rule 24    atribuicao_decl -> ID ATRIBUICAO exp_decl NOVA_LINHA
+Rule 25    leia_decl -> LEIA ABRE_PAR ID FECHA_PAR NOVA_LINHA
+Rule 26    escreva_decl -> ESCREVA ABRE_PAR exp_decl FECHA_PAR NOVA_LINHA
+Rule 27    escreva_decl -> ESCREVA ABRE_PAR chamada_func FECHA_PAR NOVA_LINHA
+Rule 28    chamada_func -> ID ABRE_PAR parametro_chama_func FECHA_PAR
+Rule 29    parametro_chama_func -> ID
+Rule 30    parametro_chama_func -> parametro_chama_func ID
+Rule 31    exp_decl -> simples_exp
+Rule 32    exp_decl -> simples_exp compara_op simples_exp
+Rule 33    compara_op -> IGUAL
+Rule 34    compara_op -> MENOR
+Rule 35    compara_op -> MAIOR
+Rule 36    compara_op -> MENOR_IGUAL
+Rule 37    compara_op -> MAIOR_IGUAL
+Rule 38    simples_exp -> termo
+Rule 39    simples_exp -> simples_exp soma_sub termo
+Rule 40    soma_sub -> SOMA
+Rule 41    soma_sub -> SUB
+Rule 42    termo -> fator
+Rule 43    termo -> termo mult_div fator
+Rule 44    mult_div -> MULT
+Rule 45    mult_div -> DIVISAO
+Rule 46    fator -> ID
+Rule 47    fator -> INTEIRO
+Rule 48    fator -> FLUTUANTE
+Rule 49    fator -> ABRE_PAR exp_decl FECHA_PAR
+Rule 50    declara_var -> tipo DOIS_PONTOS ID NOVA_LINHA
+Rule 51    parametro_decl -> parametro_decl VIRGULA tipo DOIS_PONTOS ID
+Rule 52    parametro_decl -> tipo DOIS_PONTOS ID
+Rule 53    tipo -> VAZIO
+Rule 54    tipo -> INTEIRO
+Rule 55    tipo -> FLUTUANTE
+
+Terminals, with rules where they appear
+
+ABRE_PAR             : 4 7 17 18 25 26 27 28 49
+ATE                  : 23
+ATRIBUICAO           : 24
+DIVISAO              : 45
+DOIS_PONTOS          : 50 51 52
+ENTAO                : 21 22
+ESCREVA              : 26 27
+FECHA_PAR            : 4 7 17 18 25 26 27 28 49
+FIM                  : 4 7 21 22
+FLUTUANTE            : 20 48 55
+ID                   : 7 17 24 25 28 29 30 46 50 51 52
+IGUAL                : 33
+INTEIRO              : 19 47 54
+LEIA                 : 25
+MAIOR                : 35
+MAIOR_IGUAL          : 37
+MENOR                : 34
+MENOR_IGUAL          : 36
+MULT                 : 44
+NOVA_LINHA           : 4 7 7 21 21 21 22 22 22 22 22 23 23 24 25 26 27 50
+PRINCIPAL            : 4
+REPITA               : 23
+RETORNA              : 17 18
+SE                   : 21 22
+SENAO                : 22
+SOMA                 : 40
+SUB                  : 41
+VAZIO                : 53
+VIRGULA              : 51
+error                : 
+
+Nonterminals, with rules where they appear
+
+atribuicao_decl      : 12
+chamada_func         : 27
+compara_op           : 32
+declara_var          : 3 15
+declaracao           : 8 9
+escreva_decl         : 14
+exp_decl             : 21 22 23 24 26 49
+fator                : 42 43
+func_decl            : 5 6
+func_loop            : 2 6
+leia_decl            : 13
+mult_div             : 43
+numero_decl          : 18
+parametro_chama_func : 28 30
+parametro_decl       : 7 51
+principal            : 1 2
+programa             : 3 0
+repita_decl          : 11
+retorna_decl         : 16
+se_decl              : 10
+sequencia_decl       : 4 7 9 21 22 22 23
+simples_exp          : 31 32 32 39
+soma_sub             : 39
+termo                : 38 39 43
+tipo                 : 4 7 50 51 52
+
+Parsing method: LALR
+
+state 0
+
+    (0) S' -> . programa
+    (1) programa -> . principal
+    (2) programa -> . func_loop principal
+    (3) programa -> . declara_var programa
+    (4) principal -> . tipo PRINCIPAL ABRE_PAR FECHA_PAR NOVA_LINHA sequencia_decl FIM
+    (5) func_loop -> . func_decl
+    (6) func_loop -> . func_loop func_decl
+    (50) declara_var -> . tipo DOIS_PONTOS ID NOVA_LINHA
+    (53) tipo -> . VAZIO
+    (54) tipo -> . INTEIRO
+    (55) tipo -> . FLUTUANTE
+    (7) func_decl -> . tipo ID ABRE_PAR parametro_decl FECHA_PAR NOVA_LINHA sequencia_decl FIM NOVA_LINHA
+
+    VAZIO           shift and go to state 2
+    INTEIRO         shift and go to state 9
+    FLUTUANTE       shift and go to state 4
+
+    programa                       shift and go to state 7
+    func_loop                      shift and go to state 1
+    declara_var                    shift and go to state 3
+    principal                      shift and go to state 8
+    func_decl                      shift and go to state 6
+    tipo                           shift and go to state 5
+
+state 1
+
+    (2) programa -> func_loop . principal
+    (6) func_loop -> func_loop . func_decl
+    (4) principal -> . tipo PRINCIPAL ABRE_PAR FECHA_PAR NOVA_LINHA sequencia_decl FIM
+    (7) func_decl -> . tipo ID ABRE_PAR parametro_decl FECHA_PAR NOVA_LINHA sequencia_decl FIM NOVA_LINHA
+    (53) tipo -> . VAZIO
+    (54) tipo -> . INTEIRO
+    (55) tipo -> . FLUTUANTE
+
+    VAZIO           shift and go to state 2
+    INTEIRO         shift and go to state 9
+    FLUTUANTE       shift and go to state 4
+
+    principal                      shift and go to state 12
+    func_decl                      shift and go to state 11
+    tipo                           shift and go to state 10
+
+state 2
+
+    (53) tipo -> VAZIO .
+
+    DOIS_PONTOS     reduce using rule 53 (tipo -> VAZIO .)
+    PRINCIPAL       reduce using rule 53 (tipo -> VAZIO .)
+    ID              reduce using rule 53 (tipo -> VAZIO .)
+
+
+state 3
+
+    (3) programa -> declara_var . programa
+    (1) programa -> . principal
+    (2) programa -> . func_loop principal
+    (3) programa -> . declara_var programa
+    (4) principal -> . tipo PRINCIPAL ABRE_PAR FECHA_PAR NOVA_LINHA sequencia_decl FIM
+    (5) func_loop -> . func_decl
+    (6) func_loop -> . func_loop func_decl
+    (50) declara_var -> . tipo DOIS_PONTOS ID NOVA_LINHA
+    (53) tipo -> . VAZIO
+    (54) tipo -> . INTEIRO
+    (55) tipo -> . FLUTUANTE
+    (7) func_decl -> . tipo ID ABRE_PAR parametro_decl FECHA_PAR NOVA_LINHA sequencia_decl FIM NOVA_LINHA
+
+    VAZIO           shift and go to state 2
+    INTEIRO         shift and go to state 9
+    FLUTUANTE       shift and go to state 4
+
+    programa                       shift and go to state 13
+    func_loop                      shift and go to state 1
+    declara_var                    shift and go to state 3
+    principal                      shift and go to state 8
+    func_decl                      shift and go to state 6
+    tipo                           shift and go to state 5
+
+state 4
+
+    (55) tipo -> FLUTUANTE .
+
+    DOIS_PONTOS     reduce using rule 55 (tipo -> FLUTUANTE .)
+    PRINCIPAL       reduce using rule 55 (tipo -> FLUTUANTE .)
+    ID              reduce using rule 55 (tipo -> FLUTUANTE .)
+
+
+state 5
+
+    (4) principal -> tipo . PRINCIPAL ABRE_PAR FECHA_PAR NOVA_LINHA sequencia_decl FIM
+    (50) declara_var -> tipo . DOIS_PONTOS ID NOVA_LINHA
+    (7) func_decl -> tipo . ID ABRE_PAR parametro_decl FECHA_PAR NOVA_LINHA sequencia_decl FIM NOVA_LINHA
+
+    PRINCIPAL       shift and go to state 15
+    DOIS_PONTOS     shift and go to state 14
+    ID              shift and go to state 16
+
+
+state 6
+
+    (5) func_loop -> func_decl .
+
+    VAZIO           reduce using rule 5 (func_loop -> func_decl .)
+    INTEIRO         reduce using rule 5 (func_loop -> func_decl .)
+    FLUTUANTE       reduce using rule 5 (func_loop -> func_decl .)
+
+
+state 7
+
+    (0) S' -> programa .
+
+
+
+state 8
+
+    (1) programa -> principal .
+
+    $end            reduce using rule 1 (programa -> principal .)
+
+
+state 9
+
+    (54) tipo -> INTEIRO .
+
+    DOIS_PONTOS     reduce using rule 54 (tipo -> INTEIRO .)
+    PRINCIPAL       reduce using rule 54 (tipo -> INTEIRO .)
+    ID              reduce using rule 54 (tipo -> INTEIRO .)
+
+
+state 10
+
+    (4) principal -> tipo . PRINCIPAL ABRE_PAR FECHA_PAR NOVA_LINHA sequencia_decl FIM
+    (7) func_decl -> tipo . ID ABRE_PAR parametro_decl FECHA_PAR NOVA_LINHA sequencia_decl FIM NOVA_LINHA
+
+    PRINCIPAL       shift and go to state 15
+    ID              shift and go to state 16
+
+
+state 11
+
+    (6) func_loop -> func_loop func_decl .
+
+    VAZIO           reduce using rule 6 (func_loop -> func_loop func_decl .)
+    INTEIRO         reduce using rule 6 (func_loop -> func_loop func_decl .)
+    FLUTUANTE       reduce using rule 6 (func_loop -> func_loop func_decl .)
+
+
+state 12
+
+    (2) programa -> func_loop principal .
+
+    $end            reduce using rule 2 (programa -> func_loop principal .)
+
+
+state 13
+
+    (3) programa -> declara_var programa .
+
+    $end            reduce using rule 3 (programa -> declara_var programa .)
+
+
+state 14
+
+    (50) declara_var -> tipo DOIS_PONTOS . ID NOVA_LINHA
+
+    ID              shift and go to state 17
+
+
+state 15
+
+    (4) principal -> tipo PRINCIPAL . ABRE_PAR FECHA_PAR NOVA_LINHA sequencia_decl FIM
+
+    ABRE_PAR        shift and go to state 18
+
+
+state 16
+
+    (7) func_decl -> tipo ID . ABRE_PAR parametro_decl FECHA_PAR NOVA_LINHA sequencia_decl FIM NOVA_LINHA
+
+    ABRE_PAR        shift and go to state 19
+
+
+state 17
+
+    (50) declara_var -> tipo DOIS_PONTOS ID . NOVA_LINHA
+
+    NOVA_LINHA      shift and go to state 20
+
+
+state 18
+
+    (4) principal -> tipo PRINCIPAL ABRE_PAR . FECHA_PAR NOVA_LINHA sequencia_decl FIM
+
+    FECHA_PAR       shift and go to state 21
+
+
+state 19
+
+    (7) func_decl -> tipo ID ABRE_PAR . parametro_decl FECHA_PAR NOVA_LINHA sequencia_decl FIM NOVA_LINHA
+    (51) parametro_decl -> . parametro_decl VIRGULA tipo DOIS_PONTOS ID
+    (52) parametro_decl -> . tipo DOIS_PONTOS ID
+    (53) tipo -> . VAZIO
+    (54) tipo -> . INTEIRO
+    (55) tipo -> . FLUTUANTE
+
+    VAZIO           shift and go to state 2
+    INTEIRO         shift and go to state 9
+    FLUTUANTE       shift and go to state 4
+
+    tipo                           shift and go to state 22
+    parametro_decl                 shift and go to state 23
+
+state 20
+
+    (50) declara_var -> tipo DOIS_PONTOS ID NOVA_LINHA .
+
+    VAZIO           reduce using rule 50 (declara_var -> tipo DOIS_PONTOS ID NOVA_LINHA .)
+    INTEIRO         reduce using rule 50 (declara_var -> tipo DOIS_PONTOS ID NOVA_LINHA .)
+    FLUTUANTE       reduce using rule 50 (declara_var -> tipo DOIS_PONTOS ID NOVA_LINHA .)
+    NOVA_LINHA      reduce using rule 50 (declara_var -> tipo DOIS_PONTOS ID NOVA_LINHA .)
+    SE              reduce using rule 50 (declara_var -> tipo DOIS_PONTOS ID NOVA_LINHA .)
+    REPITA          reduce using rule 50 (declara_var -> tipo DOIS_PONTOS ID NOVA_LINHA .)
+    ID              reduce using rule 50 (declara_var -> tipo DOIS_PONTOS ID NOVA_LINHA .)
+    LEIA            reduce using rule 50 (declara_var -> tipo DOIS_PONTOS ID NOVA_LINHA .)
+    ESCREVA         reduce using rule 50 (declara_var -> tipo DOIS_PONTOS ID NOVA_LINHA .)
+    RETORNA         reduce using rule 50 (declara_var -> tipo DOIS_PONTOS ID NOVA_LINHA .)
+    FIM             reduce using rule 50 (declara_var -> tipo DOIS_PONTOS ID NOVA_LINHA .)
+    ATE             reduce using rule 50 (declara_var -> tipo DOIS_PONTOS ID NOVA_LINHA .)
+
+
+state 21
+
+    (4) principal -> tipo PRINCIPAL ABRE_PAR FECHA_PAR . NOVA_LINHA sequencia_decl FIM
+
+    NOVA_LINHA      shift and go to state 24
+
+
+state 22
+
+    (52) parametro_decl -> tipo . DOIS_PONTOS ID
+
+    DOIS_PONTOS     shift and go to state 25
+
+
+state 23
+
+    (7) func_decl -> tipo ID ABRE_PAR parametro_decl . FECHA_PAR NOVA_LINHA sequencia_decl FIM NOVA_LINHA
+    (51) parametro_decl -> parametro_decl . VIRGULA tipo DOIS_PONTOS ID
+
+    FECHA_PAR       shift and go to state 26
+    VIRGULA         shift and go to state 27
+
+
+state 24
+
+    (4) principal -> tipo PRINCIPAL ABRE_PAR FECHA_PAR NOVA_LINHA . sequencia_decl FIM
+    (8) sequencia_decl -> . declaracao
+    (9) sequencia_decl -> . sequencia_decl declaracao
+    (10) declaracao -> . se_decl
+    (11) declaracao -> . repita_decl
+    (12) declaracao -> . atribuicao_decl
+    (13) declaracao -> . leia_decl
+    (14) declaracao -> . escreva_decl
+    (15) declaracao -> . declara_var
+    (16) declaracao -> . retorna_decl
+    (21) se_decl -> . SE exp_decl ENTAO NOVA_LINHA sequencia_decl NOVA_LINHA FIM NOVA_LINHA
+    (22) se_decl -> . SE exp_decl ENTAO NOVA_LINHA sequencia_decl NOVA_LINHA SENAO NOVA_LINHA sequencia_decl NOVA_LINHA FIM NOVA_LINHA
+    (23) repita_decl -> . REPITA NOVA_LINHA sequencia_decl ATE exp_decl NOVA_LINHA
+    (24) atribuicao_decl -> . ID ATRIBUICAO exp_decl NOVA_LINHA
+    (25) leia_decl -> . LEIA ABRE_PAR ID FECHA_PAR NOVA_LINHA
+    (26) escreva_decl -> . ESCREVA ABRE_PAR exp_decl FECHA_PAR NOVA_LINHA
+    (27) escreva_decl -> . ESCREVA ABRE_PAR chamada_func FECHA_PAR NOVA_LINHA
+    (50) declara_var -> . tipo DOIS_PONTOS ID NOVA_LINHA
+    (17) retorna_decl -> . RETORNA ABRE_PAR ID FECHA_PAR
+    (18) retorna_decl -> . RETORNA ABRE_PAR numero_decl FECHA_PAR
+    (53) tipo -> . VAZIO
+    (54) tipo -> . INTEIRO
+    (55) tipo -> . FLUTUANTE
+
+    SE              shift and go to state 43
+    REPITA          shift and go to state 38
+    ID              shift and go to state 33
+    LEIA            shift and go to state 28
+    ESCREVA         shift and go to state 36
+    RETORNA         shift and go to state 39
+    VAZIO           shift and go to state 2
+    INTEIRO         shift and go to state 9
+    FLUTUANTE       shift and go to state 4
+
+    declara_var                    shift and go to state 35
+    se_decl                        shift and go to state 34
+    tipo                           shift and go to state 31
+    retorna_decl                   shift and go to state 30
+    escreva_decl                   shift and go to state 29
+    atribuicao_decl                shift and go to state 32
+    repita_decl                    shift and go to state 40
+    declaracao                     shift and go to state 41
+    leia_decl                      shift and go to state 42
+    sequencia_decl                 shift and go to state 37
+
+state 25
+
+    (52) parametro_decl -> tipo DOIS_PONTOS . ID
+
+    ID              shift and go to state 44
+
+
+state 26
+
+    (7) func_decl -> tipo ID ABRE_PAR parametro_decl FECHA_PAR . NOVA_LINHA sequencia_decl FIM NOVA_LINHA
+
+    NOVA_LINHA      shift and go to state 45
+
+
+state 27
+
+    (51) parametro_decl -> parametro_decl VIRGULA . tipo DOIS_PONTOS ID
+    (53) tipo -> . VAZIO
+    (54) tipo -> . INTEIRO
+    (55) tipo -> . FLUTUANTE
+
+    VAZIO           shift and go to state 2
+    INTEIRO         shift and go to state 9
+    FLUTUANTE       shift and go to state 4
+
+    tipo                           shift and go to state 46
+
+state 28
+
+    (25) leia_decl -> LEIA . ABRE_PAR ID FECHA_PAR NOVA_LINHA
+
+    ABRE_PAR        shift and go to state 47
+
+
+state 29
+
+    (14) declaracao -> escreva_decl .
+
+    FIM             reduce using rule 14 (declaracao -> escreva_decl .)
+    SE              reduce using rule 14 (declaracao -> escreva_decl .)
+    REPITA          reduce using rule 14 (declaracao -> escreva_decl .)
+    ID              reduce using rule 14 (declaracao -> escreva_decl .)
+    LEIA            reduce using rule 14 (declaracao -> escreva_decl .)
+    ESCREVA         reduce using rule 14 (declaracao -> escreva_decl .)
+    RETORNA         reduce using rule 14 (declaracao -> escreva_decl .)
+    VAZIO           reduce using rule 14 (declaracao -> escreva_decl .)
+    INTEIRO         reduce using rule 14 (declaracao -> escreva_decl .)
+    FLUTUANTE       reduce using rule 14 (declaracao -> escreva_decl .)
+    NOVA_LINHA      reduce using rule 14 (declaracao -> escreva_decl .)
+    ATE             reduce using rule 14 (declaracao -> escreva_decl .)
+
+
+state 30
+
+    (16) declaracao -> retorna_decl .
+
+    FIM             reduce using rule 16 (declaracao -> retorna_decl .)
+    SE              reduce using rule 16 (declaracao -> retorna_decl .)
+    REPITA          reduce using rule 16 (declaracao -> retorna_decl .)
+    ID              reduce using rule 16 (declaracao -> retorna_decl .)
+    LEIA            reduce using rule 16 (declaracao -> retorna_decl .)
+    ESCREVA         reduce using rule 16 (declaracao -> retorna_decl .)
+    RETORNA         reduce using rule 16 (declaracao -> retorna_decl .)
+    VAZIO           reduce using rule 16 (declaracao -> retorna_decl .)
+    INTEIRO         reduce using rule 16 (declaracao -> retorna_decl .)
+    FLUTUANTE       reduce using rule 16 (declaracao -> retorna_decl .)
+    NOVA_LINHA      reduce using rule 16 (declaracao -> retorna_decl .)
+    ATE             reduce using rule 16 (declaracao -> retorna_decl .)
+
+
+state 31
+
+    (50) declara_var -> tipo . DOIS_PONTOS ID NOVA_LINHA
+
+    DOIS_PONTOS     shift and go to state 14
+
+
+state 32
+
+    (12) declaracao -> atribuicao_decl .
+
+    FIM             reduce using rule 12 (declaracao -> atribuicao_decl .)
+    SE              reduce using rule 12 (declaracao -> atribuicao_decl .)
+    REPITA          reduce using rule 12 (declaracao -> atribuicao_decl .)
+    ID              reduce using rule 12 (declaracao -> atribuicao_decl .)
+    LEIA            reduce using rule 12 (declaracao -> atribuicao_decl .)
+    ESCREVA         reduce using rule 12 (declaracao -> atribuicao_decl .)
+    RETORNA         reduce using rule 12 (declaracao -> atribuicao_decl .)
+    VAZIO           reduce using rule 12 (declaracao -> atribuicao_decl .)
+    INTEIRO         reduce using rule 12 (declaracao -> atribuicao_decl .)
+    FLUTUANTE       reduce using rule 12 (declaracao -> atribuicao_decl .)
+    NOVA_LINHA      reduce using rule 12 (declaracao -> atribuicao_decl .)
+    ATE             reduce using rule 12 (declaracao -> atribuicao_decl .)
+
+
+state 33
+
+    (24) atribuicao_decl -> ID . ATRIBUICAO exp_decl NOVA_LINHA
+
+    ATRIBUICAO      shift and go to state 48
+
+
+state 34
+
+    (10) declaracao -> se_decl .
+
+    FIM             reduce using rule 10 (declaracao -> se_decl .)
+    SE              reduce using rule 10 (declaracao -> se_decl .)
+    REPITA          reduce using rule 10 (declaracao -> se_decl .)
+    ID              reduce using rule 10 (declaracao -> se_decl .)
+    LEIA            reduce using rule 10 (declaracao -> se_decl .)
+    ESCREVA         reduce using rule 10 (declaracao -> se_decl .)
+    RETORNA         reduce using rule 10 (declaracao -> se_decl .)
+    VAZIO           reduce using rule 10 (declaracao -> se_decl .)
+    INTEIRO         reduce using rule 10 (declaracao -> se_decl .)
+    FLUTUANTE       reduce using rule 10 (declaracao -> se_decl .)
+    NOVA_LINHA      reduce using rule 10 (declaracao -> se_decl .)
+    ATE             reduce using rule 10 (declaracao -> se_decl .)
+
+
+state 35
+
+    (15) declaracao -> declara_var .
+
+    FIM             reduce using rule 15 (declaracao -> declara_var .)
+    SE              reduce using rule 15 (declaracao -> declara_var .)
+    REPITA          reduce using rule 15 (declaracao -> declara_var .)
+    ID              reduce using rule 15 (declaracao -> declara_var .)
+    LEIA            reduce using rule 15 (declaracao -> declara_var .)
+    ESCREVA         reduce using rule 15 (declaracao -> declara_var .)
+    RETORNA         reduce using rule 15 (declaracao -> declara_var .)
+    VAZIO           reduce using rule 15 (declaracao -> declara_var .)
+    INTEIRO         reduce using rule 15 (declaracao -> declara_var .)
+    FLUTUANTE       reduce using rule 15 (declaracao -> declara_var .)
+    NOVA_LINHA      reduce using rule 15 (declaracao -> declara_var .)
+    ATE             reduce using rule 15 (declaracao -> declara_var .)
+
+
+state 36
+
+    (26) escreva_decl -> ESCREVA . ABRE_PAR exp_decl FECHA_PAR NOVA_LINHA
+    (27) escreva_decl -> ESCREVA . ABRE_PAR chamada_func FECHA_PAR NOVA_LINHA
+
+    ABRE_PAR        shift and go to state 49
+
+
+state 37
+
+    (4) principal -> tipo PRINCIPAL ABRE_PAR FECHA_PAR NOVA_LINHA sequencia_decl . FIM
+    (9) sequencia_decl -> sequencia_decl . declaracao
+    (10) declaracao -> . se_decl
+    (11) declaracao -> . repita_decl
+    (12) declaracao -> . atribuicao_decl
+    (13) declaracao -> . leia_decl
+    (14) declaracao -> . escreva_decl
+    (15) declaracao -> . declara_var
+    (16) declaracao -> . retorna_decl
+    (21) se_decl -> . SE exp_decl ENTAO NOVA_LINHA sequencia_decl NOVA_LINHA FIM NOVA_LINHA
+    (22) se_decl -> . SE exp_decl ENTAO NOVA_LINHA sequencia_decl NOVA_LINHA SENAO NOVA_LINHA sequencia_decl NOVA_LINHA FIM NOVA_LINHA
+    (23) repita_decl -> . REPITA NOVA_LINHA sequencia_decl ATE exp_decl NOVA_LINHA
+    (24) atribuicao_decl -> . ID ATRIBUICAO exp_decl NOVA_LINHA
+    (25) leia_decl -> . LEIA ABRE_PAR ID FECHA_PAR NOVA_LINHA
+    (26) escreva_decl -> . ESCREVA ABRE_PAR exp_decl FECHA_PAR NOVA_LINHA
+    (27) escreva_decl -> . ESCREVA ABRE_PAR chamada_func FECHA_PAR NOVA_LINHA
+    (50) declara_var -> . tipo DOIS_PONTOS ID NOVA_LINHA
+    (17) retorna_decl -> . RETORNA ABRE_PAR ID FECHA_PAR
+    (18) retorna_decl -> . RETORNA ABRE_PAR numero_decl FECHA_PAR
+    (53) tipo -> . VAZIO
+    (54) tipo -> . INTEIRO
+    (55) tipo -> . FLUTUANTE
+
+    FIM             shift and go to state 51
+    SE              shift and go to state 43
+    REPITA          shift and go to state 38
+    ID              shift and go to state 33
+    LEIA            shift and go to state 28
+    ESCREVA         shift and go to state 36
+    RETORNA         shift and go to state 39
+    VAZIO           shift and go to state 2
+    INTEIRO         shift and go to state 9
+    FLUTUANTE       shift and go to state 4
+
+    declara_var                    shift and go to state 35
+    se_decl                        shift and go to state 34
+    tipo                           shift and go to state 31
+    retorna_decl                   shift and go to state 30
+    escreva_decl                   shift and go to state 29
+    atribuicao_decl                shift and go to state 32
+    repita_decl                    shift and go to state 40
+    declaracao                     shift and go to state 50
+    leia_decl                      shift and go to state 42
+
+state 38
+
+    (23) repita_decl -> REPITA . NOVA_LINHA sequencia_decl ATE exp_decl NOVA_LINHA
+
+    NOVA_LINHA      shift and go to state 52
+
+
+state 39
+
+    (17) retorna_decl -> RETORNA . ABRE_PAR ID FECHA_PAR
+    (18) retorna_decl -> RETORNA . ABRE_PAR numero_decl FECHA_PAR
+
+    ABRE_PAR        shift and go to state 53
+
+
+state 40
+
+    (11) declaracao -> repita_decl .
+
+    FIM             reduce using rule 11 (declaracao -> repita_decl .)
+    SE              reduce using rule 11 (declaracao -> repita_decl .)
+    REPITA          reduce using rule 11 (declaracao -> repita_decl .)
+    ID              reduce using rule 11 (declaracao -> repita_decl .)
+    LEIA            reduce using rule 11 (declaracao -> repita_decl .)
+    ESCREVA         reduce using rule 11 (declaracao -> repita_decl .)
+    RETORNA         reduce using rule 11 (declaracao -> repita_decl .)
+    VAZIO           reduce using rule 11 (declaracao -> repita_decl .)
+    INTEIRO         reduce using rule 11 (declaracao -> repita_decl .)
+    FLUTUANTE       reduce using rule 11 (declaracao -> repita_decl .)
+    NOVA_LINHA      reduce using rule 11 (declaracao -> repita_decl .)
+    ATE             reduce using rule 11 (declaracao -> repita_decl .)
+
+
+state 41
+
+    (8) sequencia_decl -> declaracao .
+
+    NOVA_LINHA      reduce using rule 8 (sequencia_decl -> declaracao .)
+    SE              reduce using rule 8 (sequencia_decl -> declaracao .)
+    REPITA          reduce using rule 8 (sequencia_decl -> declaracao .)
+    ID              reduce using rule 8 (sequencia_decl -> declaracao .)
+    LEIA            reduce using rule 8 (sequencia_decl -> declaracao .)
+    ESCREVA         reduce using rule 8 (sequencia_decl -> declaracao .)
+    RETORNA         reduce using rule 8 (sequencia_decl -> declaracao .)
+    VAZIO           reduce using rule 8 (sequencia_decl -> declaracao .)
+    INTEIRO         reduce using rule 8 (sequencia_decl -> declaracao .)
+    FLUTUANTE       reduce using rule 8 (sequencia_decl -> declaracao .)
+    ATE             reduce using rule 8 (sequencia_decl -> declaracao .)
+    FIM             reduce using rule 8 (sequencia_decl -> declaracao .)
+
+
+state 42
+
+    (13) declaracao -> leia_decl .
+
+    FIM             reduce using rule 13 (declaracao -> leia_decl .)
+    SE              reduce using rule 13 (declaracao -> leia_decl .)
+    REPITA          reduce using rule 13 (declaracao -> leia_decl .)
+    ID              reduce using rule 13 (declaracao -> leia_decl .)
+    LEIA            reduce using rule 13 (declaracao -> leia_decl .)
+    ESCREVA         reduce using rule 13 (declaracao -> leia_decl .)
+    RETORNA         reduce using rule 13 (declaracao -> leia_decl .)
+    VAZIO           reduce using rule 13 (declaracao -> leia_decl .)
+    INTEIRO         reduce using rule 13 (declaracao -> leia_decl .)
+    FLUTUANTE       reduce using rule 13 (declaracao -> leia_decl .)
+    NOVA_LINHA      reduce using rule 13 (declaracao -> leia_decl .)
+    ATE             reduce using rule 13 (declaracao -> leia_decl .)
+
+
+state 43
+
+    (21) se_decl -> SE . exp_decl ENTAO NOVA_LINHA sequencia_decl NOVA_LINHA FIM NOVA_LINHA
+    (22) se_decl -> SE . exp_decl ENTAO NOVA_LINHA sequencia_decl NOVA_LINHA SENAO NOVA_LINHA sequencia_decl NOVA_LINHA FIM NOVA_LINHA
+    (31) exp_decl -> . simples_exp
+    (32) exp_decl -> . simples_exp compara_op simples_exp
+    (38) simples_exp -> . termo
+    (39) simples_exp -> . simples_exp soma_sub termo
+    (42) termo -> . fator
+    (43) termo -> . termo mult_div fator
+    (46) fator -> . ID
+    (47) fator -> . INTEIRO
+    (48) fator -> . FLUTUANTE
+    (49) fator -> . ABRE_PAR exp_decl FECHA_PAR
+
+    ID              shift and go to state 57
+    INTEIRO         shift and go to state 60
+    FLUTUANTE       shift and go to state 58
+    ABRE_PAR        shift and go to state 56
+
+    simples_exp                    shift and go to state 59
+    termo                          shift and go to state 55
+    fator                          shift and go to state 54
+    exp_decl                       shift and go to state 61
+
+state 44
+
+    (52) parametro_decl -> tipo DOIS_PONTOS ID .
+
+    FECHA_PAR       reduce using rule 52 (parametro_decl -> tipo DOIS_PONTOS ID .)
+    VIRGULA         reduce using rule 52 (parametro_decl -> tipo DOIS_PONTOS ID .)
+
+
+state 45
+
+    (7) func_decl -> tipo ID ABRE_PAR parametro_decl FECHA_PAR NOVA_LINHA . sequencia_decl FIM NOVA_LINHA
+    (8) sequencia_decl -> . declaracao
+    (9) sequencia_decl -> . sequencia_decl declaracao
+    (10) declaracao -> . se_decl
+    (11) declaracao -> . repita_decl
+    (12) declaracao -> . atribuicao_decl
+    (13) declaracao -> . leia_decl
+    (14) declaracao -> . escreva_decl
+    (15) declaracao -> . declara_var
+    (16) declaracao -> . retorna_decl
+    (21) se_decl -> . SE exp_decl ENTAO NOVA_LINHA sequencia_decl NOVA_LINHA FIM NOVA_LINHA
+    (22) se_decl -> . SE exp_decl ENTAO NOVA_LINHA sequencia_decl NOVA_LINHA SENAO NOVA_LINHA sequencia_decl NOVA_LINHA FIM NOVA_LINHA
+    (23) repita_decl -> . REPITA NOVA_LINHA sequencia_decl ATE exp_decl NOVA_LINHA
+    (24) atribuicao_decl -> . ID ATRIBUICAO exp_decl NOVA_LINHA
+    (25) leia_decl -> . LEIA ABRE_PAR ID FECHA_PAR NOVA_LINHA
+    (26) escreva_decl -> . ESCREVA ABRE_PAR exp_decl FECHA_PAR NOVA_LINHA
+    (27) escreva_decl -> . ESCREVA ABRE_PAR chamada_func FECHA_PAR NOVA_LINHA
+    (50) declara_var -> . tipo DOIS_PONTOS ID NOVA_LINHA
+    (17) retorna_decl -> . RETORNA ABRE_PAR ID FECHA_PAR
+    (18) retorna_decl -> . RETORNA ABRE_PAR numero_decl FECHA_PAR
+    (53) tipo -> . VAZIO
+    (54) tipo -> . INTEIRO
+    (55) tipo -> . FLUTUANTE
+
+    SE              shift and go to state 43
+    REPITA          shift and go to state 38
+    ID              shift and go to state 33
+    LEIA            shift and go to state 28
+    ESCREVA         shift and go to state 36
+    RETORNA         shift and go to state 39
+    VAZIO           shift and go to state 2
+    INTEIRO         shift and go to state 9
+    FLUTUANTE       shift and go to state 4
+
+    se_decl                        shift and go to state 34
+    tipo                           shift and go to state 31
+    leia_decl                      shift and go to state 42
+    escreva_decl                   shift and go to state 29
+    atribuicao_decl                shift and go to state 32
+    repita_decl                    shift and go to state 40
+    declara_var                    shift and go to state 35
+    sequencia_decl                 shift and go to state 62
+    retorna_decl                   shift and go to state 30
+    declaracao                     shift and go to state 41
+
+state 46
+
+    (51) parametro_decl -> parametro_decl VIRGULA tipo . DOIS_PONTOS ID
+
+    DOIS_PONTOS     shift and go to state 63
+
+
+state 47
+
+    (25) leia_decl -> LEIA ABRE_PAR . ID FECHA_PAR NOVA_LINHA
+
+    ID              shift and go to state 64
+
+
+state 48
+
+    (24) atribuicao_decl -> ID ATRIBUICAO . exp_decl NOVA_LINHA
+    (31) exp_decl -> . simples_exp
+    (32) exp_decl -> . simples_exp compara_op simples_exp
+    (38) simples_exp -> . termo
+    (39) simples_exp -> . simples_exp soma_sub termo
+    (42) termo -> . fator
+    (43) termo -> . termo mult_div fator
+    (46) fator -> . ID
+    (47) fator -> . INTEIRO
+    (48) fator -> . FLUTUANTE
+    (49) fator -> . ABRE_PAR exp_decl FECHA_PAR
+
+    ID              shift and go to state 57
+    INTEIRO         shift and go to state 60
+    FLUTUANTE       shift and go to state 58
+    ABRE_PAR        shift and go to state 56
+
+    simples_exp                    shift and go to state 59
+    fator                          shift and go to state 54
+    exp_decl                       shift and go to state 65
+    termo                          shift and go to state 55
+
+state 49
+
+    (26) escreva_decl -> ESCREVA ABRE_PAR . exp_decl FECHA_PAR NOVA_LINHA
+    (27) escreva_decl -> ESCREVA ABRE_PAR . chamada_func FECHA_PAR NOVA_LINHA
+    (31) exp_decl -> . simples_exp
+    (32) exp_decl -> . simples_exp compara_op simples_exp
+    (28) chamada_func -> . ID ABRE_PAR parametro_chama_func FECHA_PAR
+    (38) simples_exp -> . termo
+    (39) simples_exp -> . simples_exp soma_sub termo
+    (42) termo -> . fator
+    (43) termo -> . termo mult_div fator
+    (46) fator -> . ID
+    (47) fator -> . INTEIRO
+    (48) fator -> . FLUTUANTE
+    (49) fator -> . ABRE_PAR exp_decl FECHA_PAR
+
+    ID              shift and go to state 66
+    INTEIRO         shift and go to state 60
+    FLUTUANTE       shift and go to state 58
+    ABRE_PAR        shift and go to state 56
+
+    chamada_func                   shift and go to state 67
+    simples_exp                    shift and go to state 59
+    fator                          shift and go to state 54
+    exp_decl                       shift and go to state 68
+    termo                          shift and go to state 55
+
+state 50
+
+    (9) sequencia_decl -> sequencia_decl declaracao .
+
+    NOVA_LINHA      reduce using rule 9 (sequencia_decl -> sequencia_decl declaracao .)
+    SE              reduce using rule 9 (sequencia_decl -> sequencia_decl declaracao .)
+    REPITA          reduce using rule 9 (sequencia_decl -> sequencia_decl declaracao .)
+    ID              reduce using rule 9 (sequencia_decl -> sequencia_decl declaracao .)
+    LEIA            reduce using rule 9 (sequencia_decl -> sequencia_decl declaracao .)
+    ESCREVA         reduce using rule 9 (sequencia_decl -> sequencia_decl declaracao .)
+    RETORNA         reduce using rule 9 (sequencia_decl -> sequencia_decl declaracao .)
+    VAZIO           reduce using rule 9 (sequencia_decl -> sequencia_decl declaracao .)
+    INTEIRO         reduce using rule 9 (sequencia_decl -> sequencia_decl declaracao .)
+    FLUTUANTE       reduce using rule 9 (sequencia_decl -> sequencia_decl declaracao .)
+    ATE             reduce using rule 9 (sequencia_decl -> sequencia_decl declaracao .)
+    FIM             reduce using rule 9 (sequencia_decl -> sequencia_decl declaracao .)
+
+
+state 51
+
+    (4) principal -> tipo PRINCIPAL ABRE_PAR FECHA_PAR NOVA_LINHA sequencia_decl FIM .
+
+    $end            reduce using rule 4 (principal -> tipo PRINCIPAL ABRE_PAR FECHA_PAR NOVA_LINHA sequencia_decl FIM .)
+
+
+state 52
+
+    (23) repita_decl -> REPITA NOVA_LINHA . sequencia_decl ATE exp_decl NOVA_LINHA
+    (8) sequencia_decl -> . declaracao
+    (9) sequencia_decl -> . sequencia_decl declaracao
+    (10) declaracao -> . se_decl
+    (11) declaracao -> . repita_decl
+    (12) declaracao -> . atribuicao_decl
+    (13) declaracao -> . leia_decl
+    (14) declaracao -> . escreva_decl
+    (15) declaracao -> . declara_var
+    (16) declaracao -> . retorna_decl
+    (21) se_decl -> . SE exp_decl ENTAO NOVA_LINHA sequencia_decl NOVA_LINHA FIM NOVA_LINHA
+    (22) se_decl -> . SE exp_decl ENTAO NOVA_LINHA sequencia_decl NOVA_LINHA SENAO NOVA_LINHA sequencia_decl NOVA_LINHA FIM NOVA_LINHA
+    (23) repita_decl -> . REPITA NOVA_LINHA sequencia_decl ATE exp_decl NOVA_LINHA
+    (24) atribuicao_decl -> . ID ATRIBUICAO exp_decl NOVA_LINHA
+    (25) leia_decl -> . LEIA ABRE_PAR ID FECHA_PAR NOVA_LINHA
+    (26) escreva_decl -> . ESCREVA ABRE_PAR exp_decl FECHA_PAR NOVA_LINHA
+    (27) escreva_decl -> . ESCREVA ABRE_PAR chamada_func FECHA_PAR NOVA_LINHA
+    (50) declara_var -> . tipo DOIS_PONTOS ID NOVA_LINHA
+    (17) retorna_decl -> . RETORNA ABRE_PAR ID FECHA_PAR
+    (18) retorna_decl -> . RETORNA ABRE_PAR numero_decl FECHA_PAR
+    (53) tipo -> . VAZIO
+    (54) tipo -> . INTEIRO
+    (55) tipo -> . FLUTUANTE
+
+    SE              shift and go to state 43
+    REPITA          shift and go to state 38
+    ID              shift and go to state 33
+    LEIA            shift and go to state 28
+    ESCREVA         shift and go to state 36
+    RETORNA         shift and go to state 39
+    VAZIO           shift and go to state 2
+    INTEIRO         shift and go to state 9
+    FLUTUANTE       shift and go to state 4
+
+    declara_var                    shift and go to state 35
+    se_decl                        shift and go to state 34
+    tipo                           shift and go to state 31
+    leia_decl                      shift and go to state 42
+    escreva_decl                   shift and go to state 29
+    atribuicao_decl                shift and go to state 32
+    repita_decl                    shift and go to state 40
+    declaracao                     shift and go to state 41
+    retorna_decl                   shift and go to state 30
+    sequencia_decl                 shift and go to state 69
+
+state 53
+
+    (17) retorna_decl -> RETORNA ABRE_PAR . ID FECHA_PAR
+    (18) retorna_decl -> RETORNA ABRE_PAR . numero_decl FECHA_PAR
+    (19) numero_decl -> . INTEIRO
+    (20) numero_decl -> . FLUTUANTE
+
+    ID              shift and go to state 73
+    INTEIRO         shift and go to state 71
+    FLUTUANTE       shift and go to state 70
+
+    numero_decl                    shift and go to state 72
+
+state 54
+
+    (42) termo -> fator .
+
+    MULT            reduce using rule 42 (termo -> fator .)
+    DIVISAO         reduce using rule 42 (termo -> fator .)
+    SOMA            reduce using rule 42 (termo -> fator .)
+    SUB             reduce using rule 42 (termo -> fator .)
+    ENTAO           reduce using rule 42 (termo -> fator .)
+    NOVA_LINHA      reduce using rule 42 (termo -> fator .)
+    FECHA_PAR       reduce using rule 42 (termo -> fator .)
+    IGUAL           reduce using rule 42 (termo -> fator .)
+    MENOR           reduce using rule 42 (termo -> fator .)
+    MAIOR           reduce using rule 42 (termo -> fator .)
+    MENOR_IGUAL     reduce using rule 42 (termo -> fator .)
+    MAIOR_IGUAL     reduce using rule 42 (termo -> fator .)
+
+
+state 55
+
+    (38) simples_exp -> termo .
+    (43) termo -> termo . mult_div fator
+    (44) mult_div -> . MULT
+    (45) mult_div -> . DIVISAO
+
+    IGUAL           reduce using rule 38 (simples_exp -> termo .)
+    MENOR           reduce using rule 38 (simples_exp -> termo .)
+    MAIOR           reduce using rule 38 (simples_exp -> termo .)
+    MENOR_IGUAL     reduce using rule 38 (simples_exp -> termo .)
+    MAIOR_IGUAL     reduce using rule 38 (simples_exp -> termo .)
+    SOMA            reduce using rule 38 (simples_exp -> termo .)
+    SUB             reduce using rule 38 (simples_exp -> termo .)
+    NOVA_LINHA      reduce using rule 38 (simples_exp -> termo .)
+    ENTAO           reduce using rule 38 (simples_exp -> termo .)
+    FECHA_PAR       reduce using rule 38 (simples_exp -> termo .)
+    MULT            shift and go to state 76
+    DIVISAO         shift and go to state 75
+
+    mult_div                       shift and go to state 74
+
+state 56
+
+    (49) fator -> ABRE_PAR . exp_decl FECHA_PAR
+    (31) exp_decl -> . simples_exp
+    (32) exp_decl -> . simples_exp compara_op simples_exp
+    (38) simples_exp -> . termo
+    (39) simples_exp -> . simples_exp soma_sub termo
+    (42) termo -> . fator
+    (43) termo -> . termo mult_div fator
+    (46) fator -> . ID
+    (47) fator -> . INTEIRO
+    (48) fator -> . FLUTUANTE
+    (49) fator -> . ABRE_PAR exp_decl FECHA_PAR
+
+    ID              shift and go to state 57
+    INTEIRO         shift and go to state 60
+    FLUTUANTE       shift and go to state 58
+    ABRE_PAR        shift and go to state 56
+
+    simples_exp                    shift and go to state 59
+    fator                          shift and go to state 54
+    exp_decl                       shift and go to state 77
+    termo                          shift and go to state 55
+
+state 57
+
+    (46) fator -> ID .
+
+    MULT            reduce using rule 46 (fator -> ID .)
+    DIVISAO         reduce using rule 46 (fator -> ID .)
+    IGUAL           reduce using rule 46 (fator -> ID .)
+    MENOR           reduce using rule 46 (fator -> ID .)
+    MAIOR           reduce using rule 46 (fator -> ID .)
+    MENOR_IGUAL     reduce using rule 46 (fator -> ID .)
+    MAIOR_IGUAL     reduce using rule 46 (fator -> ID .)
+    SOMA            reduce using rule 46 (fator -> ID .)
+    SUB             reduce using rule 46 (fator -> ID .)
+    NOVA_LINHA      reduce using rule 46 (fator -> ID .)
+    ENTAO           reduce using rule 46 (fator -> ID .)
+    FECHA_PAR       reduce using rule 46 (fator -> ID .)
+
+
+state 58
+
+    (48) fator -> FLUTUANTE .
+
+    MULT            reduce using rule 48 (fator -> FLUTUANTE .)
+    DIVISAO         reduce using rule 48 (fator -> FLUTUANTE .)
+    IGUAL           reduce using rule 48 (fator -> FLUTUANTE .)
+    MENOR           reduce using rule 48 (fator -> FLUTUANTE .)
+    MAIOR           reduce using rule 48 (fator -> FLUTUANTE .)
+    MENOR_IGUAL     reduce using rule 48 (fator -> FLUTUANTE .)
+    MAIOR_IGUAL     reduce using rule 48 (fator -> FLUTUANTE .)
+    SOMA            reduce using rule 48 (fator -> FLUTUANTE .)
+    SUB             reduce using rule 48 (fator -> FLUTUANTE .)
+    NOVA_LINHA      reduce using rule 48 (fator -> FLUTUANTE .)
+    ENTAO           reduce using rule 48 (fator -> FLUTUANTE .)
+    FECHA_PAR       reduce using rule 48 (fator -> FLUTUANTE .)
+
+
+state 59
+
+    (31) exp_decl -> simples_exp .
+    (32) exp_decl -> simples_exp . compara_op simples_exp
+    (39) simples_exp -> simples_exp . soma_sub termo
+    (33) compara_op -> . IGUAL
+    (34) compara_op -> . MENOR
+    (35) compara_op -> . MAIOR
+    (36) compara_op -> . MENOR_IGUAL
+    (37) compara_op -> . MAIOR_IGUAL
+    (40) soma_sub -> . SOMA
+    (41) soma_sub -> . SUB
+
+    NOVA_LINHA      reduce using rule 31 (exp_decl -> simples_exp .)
+    FECHA_PAR       reduce using rule 31 (exp_decl -> simples_exp .)
+    ENTAO           reduce using rule 31 (exp_decl -> simples_exp .)
+    IGUAL           shift and go to state 84
+    MENOR           shift and go to state 79
+    MAIOR           shift and go to state 82
+    MENOR_IGUAL     shift and go to state 81
+    MAIOR_IGUAL     shift and go to state 83
+    SOMA            shift and go to state 78
+    SUB             shift and go to state 86
+
+    soma_sub                       shift and go to state 80
+    compara_op                     shift and go to state 85
+
+state 60
+
+    (47) fator -> INTEIRO .
+
+    MULT            reduce using rule 47 (fator -> INTEIRO .)
+    DIVISAO         reduce using rule 47 (fator -> INTEIRO .)
+    IGUAL           reduce using rule 47 (fator -> INTEIRO .)
+    MENOR           reduce using rule 47 (fator -> INTEIRO .)
+    MAIOR           reduce using rule 47 (fator -> INTEIRO .)
+    MENOR_IGUAL     reduce using rule 47 (fator -> INTEIRO .)
+    MAIOR_IGUAL     reduce using rule 47 (fator -> INTEIRO .)
+    SOMA            reduce using rule 47 (fator -> INTEIRO .)
+    SUB             reduce using rule 47 (fator -> INTEIRO .)
+    NOVA_LINHA      reduce using rule 47 (fator -> INTEIRO .)
+    ENTAO           reduce using rule 47 (fator -> INTEIRO .)
+    FECHA_PAR       reduce using rule 47 (fator -> INTEIRO .)
+
+
+state 61
+
+    (21) se_decl -> SE exp_decl . ENTAO NOVA_LINHA sequencia_decl NOVA_LINHA FIM NOVA_LINHA
+    (22) se_decl -> SE exp_decl . ENTAO NOVA_LINHA sequencia_decl NOVA_LINHA SENAO NOVA_LINHA sequencia_decl NOVA_LINHA FIM NOVA_LINHA
+
+    ENTAO           shift and go to state 87
+
+
+state 62
+
+    (7) func_decl -> tipo ID ABRE_PAR parametro_decl FECHA_PAR NOVA_LINHA sequencia_decl . FIM NOVA_LINHA
+    (9) sequencia_decl -> sequencia_decl . declaracao
+    (10) declaracao -> . se_decl
+    (11) declaracao -> . repita_decl
+    (12) declaracao -> . atribuicao_decl
+    (13) declaracao -> . leia_decl
+    (14) declaracao -> . escreva_decl
+    (15) declaracao -> . declara_var
+    (16) declaracao -> . retorna_decl
+    (21) se_decl -> . SE exp_decl ENTAO NOVA_LINHA sequencia_decl NOVA_LINHA FIM NOVA_LINHA
+    (22) se_decl -> . SE exp_decl ENTAO NOVA_LINHA sequencia_decl NOVA_LINHA SENAO NOVA_LINHA sequencia_decl NOVA_LINHA FIM NOVA_LINHA
+    (23) repita_decl -> . REPITA NOVA_LINHA sequencia_decl ATE exp_decl NOVA_LINHA
+    (24) atribuicao_decl -> . ID ATRIBUICAO exp_decl NOVA_LINHA
+    (25) leia_decl -> . LEIA ABRE_PAR ID FECHA_PAR NOVA_LINHA
+    (26) escreva_decl -> . ESCREVA ABRE_PAR exp_decl FECHA_PAR NOVA_LINHA
+    (27) escreva_decl -> . ESCREVA ABRE_PAR chamada_func FECHA_PAR NOVA_LINHA
+    (50) declara_var -> . tipo DOIS_PONTOS ID NOVA_LINHA
+    (17) retorna_decl -> . RETORNA ABRE_PAR ID FECHA_PAR
+    (18) retorna_decl -> . RETORNA ABRE_PAR numero_decl FECHA_PAR
+    (53) tipo -> . VAZIO
+    (54) tipo -> . INTEIRO
+    (55) tipo -> . FLUTUANTE
+
+    FIM             shift and go to state 88
+    SE              shift and go to state 43
+    REPITA          shift and go to state 38
+    ID              shift and go to state 33
+    LEIA            shift and go to state 28
+    ESCREVA         shift and go to state 36
+    RETORNA         shift and go to state 39
+    VAZIO           shift and go to state 2
+    INTEIRO         shift and go to state 9
+    FLUTUANTE       shift and go to state 4
+
+    se_decl                        shift and go to state 34
+    tipo                           shift and go to state 31
+    leia_decl                      shift and go to state 42
+    escreva_decl                   shift and go to state 29
+    atribuicao_decl                shift and go to state 32
+    repita_decl                    shift and go to state 40
+    declara_var                    shift and go to state 35
+    retorna_decl                   shift and go to state 30
+    declaracao                     shift and go to state 50
+
+state 63
+
+    (51) parametro_decl -> parametro_decl VIRGULA tipo DOIS_PONTOS . ID
+
+    ID              shift and go to state 89
+
+
+state 64
+
+    (25) leia_decl -> LEIA ABRE_PAR ID . FECHA_PAR NOVA_LINHA
+
+    FECHA_PAR       shift and go to state 90
+
+
+state 65
+
+    (24) atribuicao_decl -> ID ATRIBUICAO exp_decl . NOVA_LINHA
+
+    NOVA_LINHA      shift and go to state 91
+
+
+state 66
+
+    (28) chamada_func -> ID . ABRE_PAR parametro_chama_func FECHA_PAR
+    (46) fator -> ID .
+
+    ABRE_PAR        shift and go to state 92
+    MULT            reduce using rule 46 (fator -> ID .)
+    DIVISAO         reduce using rule 46 (fator -> ID .)
+    IGUAL           reduce using rule 46 (fator -> ID .)
+    MENOR           reduce using rule 46 (fator -> ID .)
+    MAIOR           reduce using rule 46 (fator -> ID .)
+    MENOR_IGUAL     reduce using rule 46 (fator -> ID .)
+    MAIOR_IGUAL     reduce using rule 46 (fator -> ID .)
+    SOMA            reduce using rule 46 (fator -> ID .)
+    SUB             reduce using rule 46 (fator -> ID .)
+    FECHA_PAR       reduce using rule 46 (fator -> ID .)
+
+
+state 67
+
+    (27) escreva_decl -> ESCREVA ABRE_PAR chamada_func . FECHA_PAR NOVA_LINHA
+
+    FECHA_PAR       shift and go to state 93
+
+
+state 68
+
+    (26) escreva_decl -> ESCREVA ABRE_PAR exp_decl . FECHA_PAR NOVA_LINHA
+
+    FECHA_PAR       shift and go to state 94
+
+
+state 69
+
+    (23) repita_decl -> REPITA NOVA_LINHA sequencia_decl . ATE exp_decl NOVA_LINHA
+    (9) sequencia_decl -> sequencia_decl . declaracao
+    (10) declaracao -> . se_decl
+    (11) declaracao -> . repita_decl
+    (12) declaracao -> . atribuicao_decl
+    (13) declaracao -> . leia_decl
+    (14) declaracao -> . escreva_decl
+    (15) declaracao -> . declara_var
+    (16) declaracao -> . retorna_decl
+    (21) se_decl -> . SE exp_decl ENTAO NOVA_LINHA sequencia_decl NOVA_LINHA FIM NOVA_LINHA
+    (22) se_decl -> . SE exp_decl ENTAO NOVA_LINHA sequencia_decl NOVA_LINHA SENAO NOVA_LINHA sequencia_decl NOVA_LINHA FIM NOVA_LINHA
+    (23) repita_decl -> . REPITA NOVA_LINHA sequencia_decl ATE exp_decl NOVA_LINHA
+    (24) atribuicao_decl -> . ID ATRIBUICAO exp_decl NOVA_LINHA
+    (25) leia_decl -> . LEIA ABRE_PAR ID FECHA_PAR NOVA_LINHA
+    (26) escreva_decl -> . ESCREVA ABRE_PAR exp_decl FECHA_PAR NOVA_LINHA
+    (27) escreva_decl -> . ESCREVA ABRE_PAR chamada_func FECHA_PAR NOVA_LINHA
+    (50) declara_var -> . tipo DOIS_PONTOS ID NOVA_LINHA
+    (17) retorna_decl -> . RETORNA ABRE_PAR ID FECHA_PAR
+    (18) retorna_decl -> . RETORNA ABRE_PAR numero_decl FECHA_PAR
+    (53) tipo -> . VAZIO
+    (54) tipo -> . INTEIRO
+    (55) tipo -> . FLUTUANTE
+
+    ATE             shift and go to state 95
+    SE              shift and go to state 43
+    REPITA          shift and go to state 38
+    ID              shift and go to state 33
+    LEIA            shift and go to state 28
+    ESCREVA         shift and go to state 36
+    RETORNA         shift and go to state 39
+    VAZIO           shift and go to state 2
+    INTEIRO         shift and go to state 9
+    FLUTUANTE       shift and go to state 4
+
+    declara_var                    shift and go to state 35
+    se_decl                        shift and go to state 34
+    tipo                           shift and go to state 31
+    leia_decl                      shift and go to state 42
+    escreva_decl                   shift and go to state 29
+    atribuicao_decl                shift and go to state 32
+    repita_decl                    shift and go to state 40
+    declaracao                     shift and go to state 50
+    retorna_decl                   shift and go to state 30
+
+state 70
+
+    (20) numero_decl -> FLUTUANTE .
+
+    FECHA_PAR       reduce using rule 20 (numero_decl -> FLUTUANTE .)
+
+
+state 71
+
+    (19) numero_decl -> INTEIRO .
+
+    FECHA_PAR       reduce using rule 19 (numero_decl -> INTEIRO .)
+
+
+state 72
+
+    (18) retorna_decl -> RETORNA ABRE_PAR numero_decl . FECHA_PAR
+
+    FECHA_PAR       shift and go to state 96
+
+
+state 73
+
+    (17) retorna_decl -> RETORNA ABRE_PAR ID . FECHA_PAR
+
+    FECHA_PAR       shift and go to state 97
+
+
+state 74
+
+    (43) termo -> termo mult_div . fator
+    (46) fator -> . ID
+    (47) fator -> . INTEIRO
+    (48) fator -> . FLUTUANTE
+    (49) fator -> . ABRE_PAR exp_decl FECHA_PAR
+
+    ID              shift and go to state 57
+    INTEIRO         shift and go to state 60
+    FLUTUANTE       shift and go to state 58
+    ABRE_PAR        shift and go to state 56
+
+    fator                          shift and go to state 98
+
+state 75
+
+    (45) mult_div -> DIVISAO .
+
+    ID              reduce using rule 45 (mult_div -> DIVISAO .)
+    INTEIRO         reduce using rule 45 (mult_div -> DIVISAO .)
+    FLUTUANTE       reduce using rule 45 (mult_div -> DIVISAO .)
+    ABRE_PAR        reduce using rule 45 (mult_div -> DIVISAO .)
+
+
+state 76
+
+    (44) mult_div -> MULT .
+
+    ID              reduce using rule 44 (mult_div -> MULT .)
+    INTEIRO         reduce using rule 44 (mult_div -> MULT .)
+    FLUTUANTE       reduce using rule 44 (mult_div -> MULT .)
+    ABRE_PAR        reduce using rule 44 (mult_div -> MULT .)
+
+
+state 77
+
+    (49) fator -> ABRE_PAR exp_decl . FECHA_PAR
+
+    FECHA_PAR       shift and go to state 99
+
+
+state 78
+
+    (40) soma_sub -> SOMA .
+
+    ID              reduce using rule 40 (soma_sub -> SOMA .)
+    INTEIRO         reduce using rule 40 (soma_sub -> SOMA .)
+    FLUTUANTE       reduce using rule 40 (soma_sub -> SOMA .)
+    ABRE_PAR        reduce using rule 40 (soma_sub -> SOMA .)
+
+
+state 79
+
+    (34) compara_op -> MENOR .
+
+    ID              reduce using rule 34 (compara_op -> MENOR .)
+    INTEIRO         reduce using rule 34 (compara_op -> MENOR .)
+    FLUTUANTE       reduce using rule 34 (compara_op -> MENOR .)
+    ABRE_PAR        reduce using rule 34 (compara_op -> MENOR .)
+
+
+state 80
+
+    (39) simples_exp -> simples_exp soma_sub . termo
+    (42) termo -> . fator
+    (43) termo -> . termo mult_div fator
+    (46) fator -> . ID
+    (47) fator -> . INTEIRO
+    (48) fator -> . FLUTUANTE
+    (49) fator -> . ABRE_PAR exp_decl FECHA_PAR
+
+    ID              shift and go to state 57
+    INTEIRO         shift and go to state 60
+    FLUTUANTE       shift and go to state 58
+    ABRE_PAR        shift and go to state 56
+
+    fator                          shift and go to state 54
+    termo                          shift and go to state 100
+
+state 81
+
+    (36) compara_op -> MENOR_IGUAL .
+
+    ID              reduce using rule 36 (compara_op -> MENOR_IGUAL .)
+    INTEIRO         reduce using rule 36 (compara_op -> MENOR_IGUAL .)
+    FLUTUANTE       reduce using rule 36 (compara_op -> MENOR_IGUAL .)
+    ABRE_PAR        reduce using rule 36 (compara_op -> MENOR_IGUAL .)
+
+
+state 82
+
+    (35) compara_op -> MAIOR .
+
+    ID              reduce using rule 35 (compara_op -> MAIOR .)
+    INTEIRO         reduce using rule 35 (compara_op -> MAIOR .)
+    FLUTUANTE       reduce using rule 35 (compara_op -> MAIOR .)
+    ABRE_PAR        reduce using rule 35 (compara_op -> MAIOR .)
+
+
+state 83
+
+    (37) compara_op -> MAIOR_IGUAL .
+
+    ID              reduce using rule 37 (compara_op -> MAIOR_IGUAL .)
+    INTEIRO         reduce using rule 37 (compara_op -> MAIOR_IGUAL .)
+    FLUTUANTE       reduce using rule 37 (compara_op -> MAIOR_IGUAL .)
+    ABRE_PAR        reduce using rule 37 (compara_op -> MAIOR_IGUAL .)
+
+
+state 84
+
+    (33) compara_op -> IGUAL .
+
+    ID              reduce using rule 33 (compara_op -> IGUAL .)
+    INTEIRO         reduce using rule 33 (compara_op -> IGUAL .)
+    FLUTUANTE       reduce using rule 33 (compara_op -> IGUAL .)
+    ABRE_PAR        reduce using rule 33 (compara_op -> IGUAL .)
+
+
+state 85
+
+    (32) exp_decl -> simples_exp compara_op . simples_exp
+    (38) simples_exp -> . termo
+    (39) simples_exp -> . simples_exp soma_sub termo
+    (42) termo -> . fator
+    (43) termo -> . termo mult_div fator
+    (46) fator -> . ID
+    (47) fator -> . INTEIRO
+    (48) fator -> . FLUTUANTE
+    (49) fator -> . ABRE_PAR exp_decl FECHA_PAR
+
+    ID              shift and go to state 57
+    INTEIRO         shift and go to state 60
+    FLUTUANTE       shift and go to state 58
+    ABRE_PAR        shift and go to state 56
+
+    simples_exp                    shift and go to state 101
+    fator                          shift and go to state 54
+    termo                          shift and go to state 55
+
+state 86
+
+    (41) soma_sub -> SUB .
+
+    ID              reduce using rule 41 (soma_sub -> SUB .)
+    INTEIRO         reduce using rule 41 (soma_sub -> SUB .)
+    FLUTUANTE       reduce using rule 41 (soma_sub -> SUB .)
+    ABRE_PAR        reduce using rule 41 (soma_sub -> SUB .)
+
+
+state 87
+
+    (21) se_decl -> SE exp_decl ENTAO . NOVA_LINHA sequencia_decl NOVA_LINHA FIM NOVA_LINHA
+    (22) se_decl -> SE exp_decl ENTAO . NOVA_LINHA sequencia_decl NOVA_LINHA SENAO NOVA_LINHA sequencia_decl NOVA_LINHA FIM NOVA_LINHA
+
+    NOVA_LINHA      shift and go to state 102
+
+
+state 88
+
+    (7) func_decl -> tipo ID ABRE_PAR parametro_decl FECHA_PAR NOVA_LINHA sequencia_decl FIM . NOVA_LINHA
+
+    NOVA_LINHA      shift and go to state 103
+
+
+state 89
+
+    (51) parametro_decl -> parametro_decl VIRGULA tipo DOIS_PONTOS ID .
+
+    FECHA_PAR       reduce using rule 51 (parametro_decl -> parametro_decl VIRGULA tipo DOIS_PONTOS ID .)
+    VIRGULA         reduce using rule 51 (parametro_decl -> parametro_decl VIRGULA tipo DOIS_PONTOS ID .)
+
+
+state 90
+
+    (25) leia_decl -> LEIA ABRE_PAR ID FECHA_PAR . NOVA_LINHA
+
+    NOVA_LINHA      shift and go to state 104
+
+
+state 91
+
+    (24) atribuicao_decl -> ID ATRIBUICAO exp_decl NOVA_LINHA .
+
+    NOVA_LINHA      reduce using rule 24 (atribuicao_decl -> ID ATRIBUICAO exp_decl NOVA_LINHA .)
+    SE              reduce using rule 24 (atribuicao_decl -> ID ATRIBUICAO exp_decl NOVA_LINHA .)
+    REPITA          reduce using rule 24 (atribuicao_decl -> ID ATRIBUICAO exp_decl NOVA_LINHA .)
+    ID              reduce using rule 24 (atribuicao_decl -> ID ATRIBUICAO exp_decl NOVA_LINHA .)
+    LEIA            reduce using rule 24 (atribuicao_decl -> ID ATRIBUICAO exp_decl NOVA_LINHA .)
+    ESCREVA         reduce using rule 24 (atribuicao_decl -> ID ATRIBUICAO exp_decl NOVA_LINHA .)
+    RETORNA         reduce using rule 24 (atribuicao_decl -> ID ATRIBUICAO exp_decl NOVA_LINHA .)
+    VAZIO           reduce using rule 24 (atribuicao_decl -> ID ATRIBUICAO exp_decl NOVA_LINHA .)
+    INTEIRO         reduce using rule 24 (atribuicao_decl -> ID ATRIBUICAO exp_decl NOVA_LINHA .)
+    FLUTUANTE       reduce using rule 24 (atribuicao_decl -> ID ATRIBUICAO exp_decl NOVA_LINHA .)
+    FIM             reduce using rule 24 (atribuicao_decl -> ID ATRIBUICAO exp_decl NOVA_LINHA .)
+    ATE             reduce using rule 24 (atribuicao_decl -> ID ATRIBUICAO exp_decl NOVA_LINHA .)
+
+
+state 92
+
+    (28) chamada_func -> ID ABRE_PAR . parametro_chama_func FECHA_PAR
+    (29) parametro_chama_func -> . ID
+    (30) parametro_chama_func -> . parametro_chama_func ID
+
+    ID              shift and go to state 106
+
+    parametro_chama_func           shift and go to state 105
+
+state 93
+
+    (27) escreva_decl -> ESCREVA ABRE_PAR chamada_func FECHA_PAR . NOVA_LINHA
+
+    NOVA_LINHA      shift and go to state 107
+
+
+state 94
+
+    (26) escreva_decl -> ESCREVA ABRE_PAR exp_decl FECHA_PAR . NOVA_LINHA
+
+    NOVA_LINHA      shift and go to state 108
+
+
+state 95
+
+    (23) repita_decl -> REPITA NOVA_LINHA sequencia_decl ATE . exp_decl NOVA_LINHA
+    (31) exp_decl -> . simples_exp
+    (32) exp_decl -> . simples_exp compara_op simples_exp
+    (38) simples_exp -> . termo
+    (39) simples_exp -> . simples_exp soma_sub termo
+    (42) termo -> . fator
+    (43) termo -> . termo mult_div fator
+    (46) fator -> . ID
+    (47) fator -> . INTEIRO
+    (48) fator -> . FLUTUANTE
+    (49) fator -> . ABRE_PAR exp_decl FECHA_PAR
+
+    ID              shift and go to state 57
+    INTEIRO         shift and go to state 60
+    FLUTUANTE       shift and go to state 58
+    ABRE_PAR        shift and go to state 56
+
+    simples_exp                    shift and go to state 59
+    termo                          shift and go to state 55
+    fator                          shift and go to state 54
+    exp_decl                       shift and go to state 109
+
+state 96
+
+    (18) retorna_decl -> RETORNA ABRE_PAR numero_decl FECHA_PAR .
+
+    FIM             reduce using rule 18 (retorna_decl -> RETORNA ABRE_PAR numero_decl FECHA_PAR .)
+    SE              reduce using rule 18 (retorna_decl -> RETORNA ABRE_PAR numero_decl FECHA_PAR .)
+    REPITA          reduce using rule 18 (retorna_decl -> RETORNA ABRE_PAR numero_decl FECHA_PAR .)
+    ID              reduce using rule 18 (retorna_decl -> RETORNA ABRE_PAR numero_decl FECHA_PAR .)
+    LEIA            reduce using rule 18 (retorna_decl -> RETORNA ABRE_PAR numero_decl FECHA_PAR .)
+    ESCREVA         reduce using rule 18 (retorna_decl -> RETORNA ABRE_PAR numero_decl FECHA_PAR .)
+    RETORNA         reduce using rule 18 (retorna_decl -> RETORNA ABRE_PAR numero_decl FECHA_PAR .)
+    VAZIO           reduce using rule 18 (retorna_decl -> RETORNA ABRE_PAR numero_decl FECHA_PAR .)
+    INTEIRO         reduce using rule 18 (retorna_decl -> RETORNA ABRE_PAR numero_decl FECHA_PAR .)
+    FLUTUANTE       reduce using rule 18 (retorna_decl -> RETORNA ABRE_PAR numero_decl FECHA_PAR .)
+    NOVA_LINHA      reduce using rule 18 (retorna_decl -> RETORNA ABRE_PAR numero_decl FECHA_PAR .)
+    ATE             reduce using rule 18 (retorna_decl -> RETORNA ABRE_PAR numero_decl FECHA_PAR .)
+
+
+state 97
+
+    (17) retorna_decl -> RETORNA ABRE_PAR ID FECHA_PAR .
+
+    FIM             reduce using rule 17 (retorna_decl -> RETORNA ABRE_PAR ID FECHA_PAR .)
+    SE              reduce using rule 17 (retorna_decl -> RETORNA ABRE_PAR ID FECHA_PAR .)
+    REPITA          reduce using rule 17 (retorna_decl -> RETORNA ABRE_PAR ID FECHA_PAR .)
+    ID              reduce using rule 17 (retorna_decl -> RETORNA ABRE_PAR ID FECHA_PAR .)
+    LEIA            reduce using rule 17 (retorna_decl -> RETORNA ABRE_PAR ID FECHA_PAR .)
+    ESCREVA         reduce using rule 17 (retorna_decl -> RETORNA ABRE_PAR ID FECHA_PAR .)
+    RETORNA         reduce using rule 17 (retorna_decl -> RETORNA ABRE_PAR ID FECHA_PAR .)
+    VAZIO           reduce using rule 17 (retorna_decl -> RETORNA ABRE_PAR ID FECHA_PAR .)
+    INTEIRO         reduce using rule 17 (retorna_decl -> RETORNA ABRE_PAR ID FECHA_PAR .)
+    FLUTUANTE       reduce using rule 17 (retorna_decl -> RETORNA ABRE_PAR ID FECHA_PAR .)
+    NOVA_LINHA      reduce using rule 17 (retorna_decl -> RETORNA ABRE_PAR ID FECHA_PAR .)
+    ATE             reduce using rule 17 (retorna_decl -> RETORNA ABRE_PAR ID FECHA_PAR .)
+
+
+state 98
+
+    (43) termo -> termo mult_div fator .
+
+    MULT            reduce using rule 43 (termo -> termo mult_div fator .)
+    DIVISAO         reduce using rule 43 (termo -> termo mult_div fator .)
+    SOMA            reduce using rule 43 (termo -> termo mult_div fator .)
+    SUB             reduce using rule 43 (termo -> termo mult_div fator .)
+    ENTAO           reduce using rule 43 (termo -> termo mult_div fator .)
+    NOVA_LINHA      reduce using rule 43 (termo -> termo mult_div fator .)
+    FECHA_PAR       reduce using rule 43 (termo -> termo mult_div fator .)
+    IGUAL           reduce using rule 43 (termo -> termo mult_div fator .)
+    MENOR           reduce using rule 43 (termo -> termo mult_div fator .)
+    MAIOR           reduce using rule 43 (termo -> termo mult_div fator .)
+    MENOR_IGUAL     reduce using rule 43 (termo -> termo mult_div fator .)
+    MAIOR_IGUAL     reduce using rule 43 (termo -> termo mult_div fator .)
+
+
+state 99
+
+    (49) fator -> ABRE_PAR exp_decl FECHA_PAR .
+
+    MULT            reduce using rule 49 (fator -> ABRE_PAR exp_decl FECHA_PAR .)
+    DIVISAO         reduce using rule 49 (fator -> ABRE_PAR exp_decl FECHA_PAR .)
+    IGUAL           reduce using rule 49 (fator -> ABRE_PAR exp_decl FECHA_PAR .)
+    MENOR           reduce using rule 49 (fator -> ABRE_PAR exp_decl FECHA_PAR .)
+    MAIOR           reduce using rule 49 (fator -> ABRE_PAR exp_decl FECHA_PAR .)
+    MENOR_IGUAL     reduce using rule 49 (fator -> ABRE_PAR exp_decl FECHA_PAR .)
+    MAIOR_IGUAL     reduce using rule 49 (fator -> ABRE_PAR exp_decl FECHA_PAR .)
+    SOMA            reduce using rule 49 (fator -> ABRE_PAR exp_decl FECHA_PAR .)
+    SUB             reduce using rule 49 (fator -> ABRE_PAR exp_decl FECHA_PAR .)
+    NOVA_LINHA      reduce using rule 49 (fator -> ABRE_PAR exp_decl FECHA_PAR .)
+    ENTAO           reduce using rule 49 (fator -> ABRE_PAR exp_decl FECHA_PAR .)
+    FECHA_PAR       reduce using rule 49 (fator -> ABRE_PAR exp_decl FECHA_PAR .)
+
+
+state 100
+
+    (39) simples_exp -> simples_exp soma_sub termo .
+    (43) termo -> termo . mult_div fator
+    (44) mult_div -> . MULT
+    (45) mult_div -> . DIVISAO
+
+    IGUAL           reduce using rule 39 (simples_exp -> simples_exp soma_sub termo .)
+    MENOR           reduce using rule 39 (simples_exp -> simples_exp soma_sub termo .)
+    MAIOR           reduce using rule 39 (simples_exp -> simples_exp soma_sub termo .)
+    MENOR_IGUAL     reduce using rule 39 (simples_exp -> simples_exp soma_sub termo .)
+    MAIOR_IGUAL     reduce using rule 39 (simples_exp -> simples_exp soma_sub termo .)
+    SOMA            reduce using rule 39 (simples_exp -> simples_exp soma_sub termo .)
+    SUB             reduce using rule 39 (simples_exp -> simples_exp soma_sub termo .)
+    NOVA_LINHA      reduce using rule 39 (simples_exp -> simples_exp soma_sub termo .)
+    ENTAO           reduce using rule 39 (simples_exp -> simples_exp soma_sub termo .)
+    FECHA_PAR       reduce using rule 39 (simples_exp -> simples_exp soma_sub termo .)
+    MULT            shift and go to state 76
+    DIVISAO         shift and go to state 75
+
+    mult_div                       shift and go to state 74
+
+state 101
+
+    (32) exp_decl -> simples_exp compara_op simples_exp .
+    (39) simples_exp -> simples_exp . soma_sub termo
+    (40) soma_sub -> . SOMA
+    (41) soma_sub -> . SUB
+
+    NOVA_LINHA      reduce using rule 32 (exp_decl -> simples_exp compara_op simples_exp .)
+    FECHA_PAR       reduce using rule 32 (exp_decl -> simples_exp compara_op simples_exp .)
+    ENTAO           reduce using rule 32 (exp_decl -> simples_exp compara_op simples_exp .)
+    SOMA            shift and go to state 78
+    SUB             shift and go to state 86
+
+    soma_sub                       shift and go to state 80
+
+state 102
+
+    (21) se_decl -> SE exp_decl ENTAO NOVA_LINHA . sequencia_decl NOVA_LINHA FIM NOVA_LINHA
+    (22) se_decl -> SE exp_decl ENTAO NOVA_LINHA . sequencia_decl NOVA_LINHA SENAO NOVA_LINHA sequencia_decl NOVA_LINHA FIM NOVA_LINHA
+    (8) sequencia_decl -> . declaracao
+    (9) sequencia_decl -> . sequencia_decl declaracao
+    (10) declaracao -> . se_decl
+    (11) declaracao -> . repita_decl
+    (12) declaracao -> . atribuicao_decl
+    (13) declaracao -> . leia_decl
+    (14) declaracao -> . escreva_decl
+    (15) declaracao -> . declara_var
+    (16) declaracao -> . retorna_decl
+    (21) se_decl -> . SE exp_decl ENTAO NOVA_LINHA sequencia_decl NOVA_LINHA FIM NOVA_LINHA
+    (22) se_decl -> . SE exp_decl ENTAO NOVA_LINHA sequencia_decl NOVA_LINHA SENAO NOVA_LINHA sequencia_decl NOVA_LINHA FIM NOVA_LINHA
+    (23) repita_decl -> . REPITA NOVA_LINHA sequencia_decl ATE exp_decl NOVA_LINHA
+    (24) atribuicao_decl -> . ID ATRIBUICAO exp_decl NOVA_LINHA
+    (25) leia_decl -> . LEIA ABRE_PAR ID FECHA_PAR NOVA_LINHA
+    (26) escreva_decl -> . ESCREVA ABRE_PAR exp_decl FECHA_PAR NOVA_LINHA
+    (27) escreva_decl -> . ESCREVA ABRE_PAR chamada_func FECHA_PAR NOVA_LINHA
+    (50) declara_var -> . tipo DOIS_PONTOS ID NOVA_LINHA
+    (17) retorna_decl -> . RETORNA ABRE_PAR ID FECHA_PAR
+    (18) retorna_decl -> . RETORNA ABRE_PAR numero_decl FECHA_PAR
+    (53) tipo -> . VAZIO
+    (54) tipo -> . INTEIRO
+    (55) tipo -> . FLUTUANTE
+
+    SE              shift and go to state 43
+    REPITA          shift and go to state 38
+    ID              shift and go to state 33
+    LEIA            shift and go to state 28
+    ESCREVA         shift and go to state 36
+    RETORNA         shift and go to state 39
+    VAZIO           shift and go to state 2
+    INTEIRO         shift and go to state 9
+    FLUTUANTE       shift and go to state 4
+
+    declara_var                    shift and go to state 35
+    se_decl                        shift and go to state 34
+    tipo                           shift and go to state 31
+    leia_decl                      shift and go to state 42
+    escreva_decl                   shift and go to state 29
+    atribuicao_decl                shift and go to state 32
+    repita_decl                    shift and go to state 40
+    declaracao                     shift and go to state 41
+    retorna_decl                   shift and go to state 30
+    sequencia_decl                 shift and go to state 110
+
+state 103
+
+    (7) func_decl -> tipo ID ABRE_PAR parametro_decl FECHA_PAR NOVA_LINHA sequencia_decl FIM NOVA_LINHA .
+
+    VAZIO           reduce using rule 7 (func_decl -> tipo ID ABRE_PAR parametro_decl FECHA_PAR NOVA_LINHA sequencia_decl FIM NOVA_LINHA .)
+    INTEIRO         reduce using rule 7 (func_decl -> tipo ID ABRE_PAR parametro_decl FECHA_PAR NOVA_LINHA sequencia_decl FIM NOVA_LINHA .)
+    FLUTUANTE       reduce using rule 7 (func_decl -> tipo ID ABRE_PAR parametro_decl FECHA_PAR NOVA_LINHA sequencia_decl FIM NOVA_LINHA .)
+
+
+state 104
+
+    (25) leia_decl -> LEIA ABRE_PAR ID FECHA_PAR NOVA_LINHA .
+
+    NOVA_LINHA      reduce using rule 25 (leia_decl -> LEIA ABRE_PAR ID FECHA_PAR NOVA_LINHA .)
+    SE              reduce using rule 25 (leia_decl -> LEIA ABRE_PAR ID FECHA_PAR NOVA_LINHA .)
+    REPITA          reduce using rule 25 (leia_decl -> LEIA ABRE_PAR ID FECHA_PAR NOVA_LINHA .)
+    ID              reduce using rule 25 (leia_decl -> LEIA ABRE_PAR ID FECHA_PAR NOVA_LINHA .)
+    LEIA            reduce using rule 25 (leia_decl -> LEIA ABRE_PAR ID FECHA_PAR NOVA_LINHA .)
+    ESCREVA         reduce using rule 25 (leia_decl -> LEIA ABRE_PAR ID FECHA_PAR NOVA_LINHA .)
+    RETORNA         reduce using rule 25 (leia_decl -> LEIA ABRE_PAR ID FECHA_PAR NOVA_LINHA .)
+    VAZIO           reduce using rule 25 (leia_decl -> LEIA ABRE_PAR ID FECHA_PAR NOVA_LINHA .)
+    INTEIRO         reduce using rule 25 (leia_decl -> LEIA ABRE_PAR ID FECHA_PAR NOVA_LINHA .)
+    FLUTUANTE       reduce using rule 25 (leia_decl -> LEIA ABRE_PAR ID FECHA_PAR NOVA_LINHA .)
+    FIM             reduce using rule 25 (leia_decl -> LEIA ABRE_PAR ID FECHA_PAR NOVA_LINHA .)
+    ATE             reduce using rule 25 (leia_decl -> LEIA ABRE_PAR ID FECHA_PAR NOVA_LINHA .)
+
+
+state 105
+
+    (28) chamada_func -> ID ABRE_PAR parametro_chama_func . FECHA_PAR
+    (30) parametro_chama_func -> parametro_chama_func . ID
+
+    FECHA_PAR       shift and go to state 111
+    ID              shift and go to state 112
+
+
+state 106
+
+    (29) parametro_chama_func -> ID .
+
+    FECHA_PAR       reduce using rule 29 (parametro_chama_func -> ID .)
+    ID              reduce using rule 29 (parametro_chama_func -> ID .)
+
+
+state 107
+
+    (27) escreva_decl -> ESCREVA ABRE_PAR chamada_func FECHA_PAR NOVA_LINHA .
+
+    FIM             reduce using rule 27 (escreva_decl -> ESCREVA ABRE_PAR chamada_func FECHA_PAR NOVA_LINHA .)
+    SE              reduce using rule 27 (escreva_decl -> ESCREVA ABRE_PAR chamada_func FECHA_PAR NOVA_LINHA .)
+    REPITA          reduce using rule 27 (escreva_decl -> ESCREVA ABRE_PAR chamada_func FECHA_PAR NOVA_LINHA .)
+    ID              reduce using rule 27 (escreva_decl -> ESCREVA ABRE_PAR chamada_func FECHA_PAR NOVA_LINHA .)
+    LEIA            reduce using rule 27 (escreva_decl -> ESCREVA ABRE_PAR chamada_func FECHA_PAR NOVA_LINHA .)
+    ESCREVA         reduce using rule 27 (escreva_decl -> ESCREVA ABRE_PAR chamada_func FECHA_PAR NOVA_LINHA .)
+    RETORNA         reduce using rule 27 (escreva_decl -> ESCREVA ABRE_PAR chamada_func FECHA_PAR NOVA_LINHA .)
+    VAZIO           reduce using rule 27 (escreva_decl -> ESCREVA ABRE_PAR chamada_func FECHA_PAR NOVA_LINHA .)
+    INTEIRO         reduce using rule 27 (escreva_decl -> ESCREVA ABRE_PAR chamada_func FECHA_PAR NOVA_LINHA .)
+    FLUTUANTE       reduce using rule 27 (escreva_decl -> ESCREVA ABRE_PAR chamada_func FECHA_PAR NOVA_LINHA .)
+    NOVA_LINHA      reduce using rule 27 (escreva_decl -> ESCREVA ABRE_PAR chamada_func FECHA_PAR NOVA_LINHA .)
+    ATE             reduce using rule 27 (escreva_decl -> ESCREVA ABRE_PAR chamada_func FECHA_PAR NOVA_LINHA .)
+
+
+state 108
+
+    (26) escreva_decl -> ESCREVA ABRE_PAR exp_decl FECHA_PAR NOVA_LINHA .
+
+    FIM             reduce using rule 26 (escreva_decl -> ESCREVA ABRE_PAR exp_decl FECHA_PAR NOVA_LINHA .)
+    SE              reduce using rule 26 (escreva_decl -> ESCREVA ABRE_PAR exp_decl FECHA_PAR NOVA_LINHA .)
+    REPITA          reduce using rule 26 (escreva_decl -> ESCREVA ABRE_PAR exp_decl FECHA_PAR NOVA_LINHA .)
+    ID              reduce using rule 26 (escreva_decl -> ESCREVA ABRE_PAR exp_decl FECHA_PAR NOVA_LINHA .)
+    LEIA            reduce using rule 26 (escreva_decl -> ESCREVA ABRE_PAR exp_decl FECHA_PAR NOVA_LINHA .)
+    ESCREVA         reduce using rule 26 (escreva_decl -> ESCREVA ABRE_PAR exp_decl FECHA_PAR NOVA_LINHA .)
+    RETORNA         reduce using rule 26 (escreva_decl -> ESCREVA ABRE_PAR exp_decl FECHA_PAR NOVA_LINHA .)
+    VAZIO           reduce using rule 26 (escreva_decl -> ESCREVA ABRE_PAR exp_decl FECHA_PAR NOVA_LINHA .)
+    INTEIRO         reduce using rule 26 (escreva_decl -> ESCREVA ABRE_PAR exp_decl FECHA_PAR NOVA_LINHA .)
+    FLUTUANTE       reduce using rule 26 (escreva_decl -> ESCREVA ABRE_PAR exp_decl FECHA_PAR NOVA_LINHA .)
+    NOVA_LINHA      reduce using rule 26 (escreva_decl -> ESCREVA ABRE_PAR exp_decl FECHA_PAR NOVA_LINHA .)
+    ATE             reduce using rule 26 (escreva_decl -> ESCREVA ABRE_PAR exp_decl FECHA_PAR NOVA_LINHA .)
+
+
+state 109
+
+    (23) repita_decl -> REPITA NOVA_LINHA sequencia_decl ATE exp_decl . NOVA_LINHA
+
+    NOVA_LINHA      shift and go to state 113
+
+
+state 110
+
+    (21) se_decl -> SE exp_decl ENTAO NOVA_LINHA sequencia_decl . NOVA_LINHA FIM NOVA_LINHA
+    (22) se_decl -> SE exp_decl ENTAO NOVA_LINHA sequencia_decl . NOVA_LINHA SENAO NOVA_LINHA sequencia_decl NOVA_LINHA FIM NOVA_LINHA
+    (9) sequencia_decl -> sequencia_decl . declaracao
+    (10) declaracao -> . se_decl
+    (11) declaracao -> . repita_decl
+    (12) declaracao -> . atribuicao_decl
+    (13) declaracao -> . leia_decl
+    (14) declaracao -> . escreva_decl
+    (15) declaracao -> . declara_var
+    (16) declaracao -> . retorna_decl
+    (21) se_decl -> . SE exp_decl ENTAO NOVA_LINHA sequencia_decl NOVA_LINHA FIM NOVA_LINHA
+    (22) se_decl -> . SE exp_decl ENTAO NOVA_LINHA sequencia_decl NOVA_LINHA SENAO NOVA_LINHA sequencia_decl NOVA_LINHA FIM NOVA_LINHA
+    (23) repita_decl -> . REPITA NOVA_LINHA sequencia_decl ATE exp_decl NOVA_LINHA
+    (24) atribuicao_decl -> . ID ATRIBUICAO exp_decl NOVA_LINHA
+    (25) leia_decl -> . LEIA ABRE_PAR ID FECHA_PAR NOVA_LINHA
+    (26) escreva_decl -> . ESCREVA ABRE_PAR exp_decl FECHA_PAR NOVA_LINHA
+    (27) escreva_decl -> . ESCREVA ABRE_PAR chamada_func FECHA_PAR NOVA_LINHA
+    (50) declara_var -> . tipo DOIS_PONTOS ID NOVA_LINHA
+    (17) retorna_decl -> . RETORNA ABRE_PAR ID FECHA_PAR
+    (18) retorna_decl -> . RETORNA ABRE_PAR numero_decl FECHA_PAR
+    (53) tipo -> . VAZIO
+    (54) tipo -> . INTEIRO
+    (55) tipo -> . FLUTUANTE
+
+    NOVA_LINHA      shift and go to state 114
+    SE              shift and go to state 43
+    REPITA          shift and go to state 38
+    ID              shift and go to state 33
+    LEIA            shift and go to state 28
+    ESCREVA         shift and go to state 36
+    RETORNA         shift and go to state 39
+    VAZIO           shift and go to state 2
+    INTEIRO         shift and go to state 9
+    FLUTUANTE       shift and go to state 4
+
+    declara_var                    shift and go to state 35
+    se_decl                        shift and go to state 34
+    tipo                           shift and go to state 31
+    leia_decl                      shift and go to state 42
+    escreva_decl                   shift and go to state 29
+    atribuicao_decl                shift and go to state 32
+    repita_decl                    shift and go to state 40
+    declaracao                     shift and go to state 50
+    retorna_decl                   shift and go to state 30
+
+state 111
+
+    (28) chamada_func -> ID ABRE_PAR parametro_chama_func FECHA_PAR .
+
+    FECHA_PAR       reduce using rule 28 (chamada_func -> ID ABRE_PAR parametro_chama_func FECHA_PAR .)
+
+
+state 112
+
+    (30) parametro_chama_func -> parametro_chama_func ID .
+
+    FECHA_PAR       reduce using rule 30 (parametro_chama_func -> parametro_chama_func ID .)
+    ID              reduce using rule 30 (parametro_chama_func -> parametro_chama_func ID .)
+
+
+state 113
+
+    (23) repita_decl -> REPITA NOVA_LINHA sequencia_decl ATE exp_decl NOVA_LINHA .
+
+    NOVA_LINHA      reduce using rule 23 (repita_decl -> REPITA NOVA_LINHA sequencia_decl ATE exp_decl NOVA_LINHA .)
+    SE              reduce using rule 23 (repita_decl -> REPITA NOVA_LINHA sequencia_decl ATE exp_decl NOVA_LINHA .)
+    REPITA          reduce using rule 23 (repita_decl -> REPITA NOVA_LINHA sequencia_decl ATE exp_decl NOVA_LINHA .)
+    ID              reduce using rule 23 (repita_decl -> REPITA NOVA_LINHA sequencia_decl ATE exp_decl NOVA_LINHA .)
+    LEIA            reduce using rule 23 (repita_decl -> REPITA NOVA_LINHA sequencia_decl ATE exp_decl NOVA_LINHA .)
+    ESCREVA         reduce using rule 23 (repita_decl -> REPITA NOVA_LINHA sequencia_decl ATE exp_decl NOVA_LINHA .)
+    RETORNA         reduce using rule 23 (repita_decl -> REPITA NOVA_LINHA sequencia_decl ATE exp_decl NOVA_LINHA .)
+    VAZIO           reduce using rule 23 (repita_decl -> REPITA NOVA_LINHA sequencia_decl ATE exp_decl NOVA_LINHA .)
+    INTEIRO         reduce using rule 23 (repita_decl -> REPITA NOVA_LINHA sequencia_decl ATE exp_decl NOVA_LINHA .)
+    FLUTUANTE       reduce using rule 23 (repita_decl -> REPITA NOVA_LINHA sequencia_decl ATE exp_decl NOVA_LINHA .)
+    FIM             reduce using rule 23 (repita_decl -> REPITA NOVA_LINHA sequencia_decl ATE exp_decl NOVA_LINHA .)
+    ATE             reduce using rule 23 (repita_decl -> REPITA NOVA_LINHA sequencia_decl ATE exp_decl NOVA_LINHA .)
+
+
+state 114
+
+    (21) se_decl -> SE exp_decl ENTAO NOVA_LINHA sequencia_decl NOVA_LINHA . FIM NOVA_LINHA
+    (22) se_decl -> SE exp_decl ENTAO NOVA_LINHA sequencia_decl NOVA_LINHA . SENAO NOVA_LINHA sequencia_decl NOVA_LINHA FIM NOVA_LINHA
+
+    FIM             shift and go to state 116
+    SENAO           shift and go to state 115
+
+
+state 115
+
+    (22) se_decl -> SE exp_decl ENTAO NOVA_LINHA sequencia_decl NOVA_LINHA SENAO . NOVA_LINHA sequencia_decl NOVA_LINHA FIM NOVA_LINHA
+
+    NOVA_LINHA      shift and go to state 117
+
+
+state 116
+
+    (21) se_decl -> SE exp_decl ENTAO NOVA_LINHA sequencia_decl NOVA_LINHA FIM . NOVA_LINHA
+
+    NOVA_LINHA      shift and go to state 118
+
+
+state 117
+
+    (22) se_decl -> SE exp_decl ENTAO NOVA_LINHA sequencia_decl NOVA_LINHA SENAO NOVA_LINHA . sequencia_decl NOVA_LINHA FIM NOVA_LINHA
+    (8) sequencia_decl -> . declaracao
+    (9) sequencia_decl -> . sequencia_decl declaracao
+    (10) declaracao -> . se_decl
+    (11) declaracao -> . repita_decl
+    (12) declaracao -> . atribuicao_decl
+    (13) declaracao -> . leia_decl
+    (14) declaracao -> . escreva_decl
+    (15) declaracao -> . declara_var
+    (16) declaracao -> . retorna_decl
+    (21) se_decl -> . SE exp_decl ENTAO NOVA_LINHA sequencia_decl NOVA_LINHA FIM NOVA_LINHA
+    (22) se_decl -> . SE exp_decl ENTAO NOVA_LINHA sequencia_decl NOVA_LINHA SENAO NOVA_LINHA sequencia_decl NOVA_LINHA FIM NOVA_LINHA
+    (23) repita_decl -> . REPITA NOVA_LINHA sequencia_decl ATE exp_decl NOVA_LINHA
+    (24) atribuicao_decl -> . ID ATRIBUICAO exp_decl NOVA_LINHA
+    (25) leia_decl -> . LEIA ABRE_PAR ID FECHA_PAR NOVA_LINHA
+    (26) escreva_decl -> . ESCREVA ABRE_PAR exp_decl FECHA_PAR NOVA_LINHA
+    (27) escreva_decl -> . ESCREVA ABRE_PAR chamada_func FECHA_PAR NOVA_LINHA
+    (50) declara_var -> . tipo DOIS_PONTOS ID NOVA_LINHA
+    (17) retorna_decl -> . RETORNA ABRE_PAR ID FECHA_PAR
+    (18) retorna_decl -> . RETORNA ABRE_PAR numero_decl FECHA_PAR
+    (53) tipo -> . VAZIO
+    (54) tipo -> . INTEIRO
+    (55) tipo -> . FLUTUANTE
+
+    SE              shift and go to state 43
+    REPITA          shift and go to state 38
+    ID              shift and go to state 33
+    LEIA            shift and go to state 28
+    ESCREVA         shift and go to state 36
+    RETORNA         shift and go to state 39
+    VAZIO           shift and go to state 2
+    INTEIRO         shift and go to state 9
+    FLUTUANTE       shift and go to state 4
+
+    declara_var                    shift and go to state 35
+    se_decl                        shift and go to state 34
+    tipo                           shift and go to state 31
+    leia_decl                      shift and go to state 42
+    escreva_decl                   shift and go to state 29
+    atribuicao_decl                shift and go to state 32
+    repita_decl                    shift and go to state 40
+    declaracao                     shift and go to state 41
+    retorna_decl                   shift and go to state 30
+    sequencia_decl                 shift and go to state 119
+
+state 118
+
+    (21) se_decl -> SE exp_decl ENTAO NOVA_LINHA sequencia_decl NOVA_LINHA FIM NOVA_LINHA .
+
+    FIM             reduce using rule 21 (se_decl -> SE exp_decl ENTAO NOVA_LINHA sequencia_decl NOVA_LINHA FIM NOVA_LINHA .)
+    SE              reduce using rule 21 (se_decl -> SE exp_decl ENTAO NOVA_LINHA sequencia_decl NOVA_LINHA FIM NOVA_LINHA .)
+    REPITA          reduce using rule 21 (se_decl -> SE exp_decl ENTAO NOVA_LINHA sequencia_decl NOVA_LINHA FIM NOVA_LINHA .)
+    ID              reduce using rule 21 (se_decl -> SE exp_decl ENTAO NOVA_LINHA sequencia_decl NOVA_LINHA FIM NOVA_LINHA .)
+    LEIA            reduce using rule 21 (se_decl -> SE exp_decl ENTAO NOVA_LINHA sequencia_decl NOVA_LINHA FIM NOVA_LINHA .)
+    ESCREVA         reduce using rule 21 (se_decl -> SE exp_decl ENTAO NOVA_LINHA sequencia_decl NOVA_LINHA FIM NOVA_LINHA .)
+    RETORNA         reduce using rule 21 (se_decl -> SE exp_decl ENTAO NOVA_LINHA sequencia_decl NOVA_LINHA FIM NOVA_LINHA .)
+    VAZIO           reduce using rule 21 (se_decl -> SE exp_decl ENTAO NOVA_LINHA sequencia_decl NOVA_LINHA FIM NOVA_LINHA .)
+    INTEIRO         reduce using rule 21 (se_decl -> SE exp_decl ENTAO NOVA_LINHA sequencia_decl NOVA_LINHA FIM NOVA_LINHA .)
+    FLUTUANTE       reduce using rule 21 (se_decl -> SE exp_decl ENTAO NOVA_LINHA sequencia_decl NOVA_LINHA FIM NOVA_LINHA .)
+    NOVA_LINHA      reduce using rule 21 (se_decl -> SE exp_decl ENTAO NOVA_LINHA sequencia_decl NOVA_LINHA FIM NOVA_LINHA .)
+    ATE             reduce using rule 21 (se_decl -> SE exp_decl ENTAO NOVA_LINHA sequencia_decl NOVA_LINHA FIM NOVA_LINHA .)
+
+
+state 119
+
+    (22) se_decl -> SE exp_decl ENTAO NOVA_LINHA sequencia_decl NOVA_LINHA SENAO NOVA_LINHA sequencia_decl . NOVA_LINHA FIM NOVA_LINHA
+    (9) sequencia_decl -> sequencia_decl . declaracao
+    (10) declaracao -> . se_decl
+    (11) declaracao -> . repita_decl
+    (12) declaracao -> . atribuicao_decl
+    (13) declaracao -> . leia_decl
+    (14) declaracao -> . escreva_decl
+    (15) declaracao -> . declara_var
+    (16) declaracao -> . retorna_decl
+    (21) se_decl -> . SE exp_decl ENTAO NOVA_LINHA sequencia_decl NOVA_LINHA FIM NOVA_LINHA
+    (22) se_decl -> . SE exp_decl ENTAO NOVA_LINHA sequencia_decl NOVA_LINHA SENAO NOVA_LINHA sequencia_decl NOVA_LINHA FIM NOVA_LINHA
+    (23) repita_decl -> . REPITA NOVA_LINHA sequencia_decl ATE exp_decl NOVA_LINHA
+    (24) atribuicao_decl -> . ID ATRIBUICAO exp_decl NOVA_LINHA
+    (25) leia_decl -> . LEIA ABRE_PAR ID FECHA_PAR NOVA_LINHA
+    (26) escreva_decl -> . ESCREVA ABRE_PAR exp_decl FECHA_PAR NOVA_LINHA
+    (27) escreva_decl -> . ESCREVA ABRE_PAR chamada_func FECHA_PAR NOVA_LINHA
+    (50) declara_var -> . tipo DOIS_PONTOS ID NOVA_LINHA
+    (17) retorna_decl -> . RETORNA ABRE_PAR ID FECHA_PAR
+    (18) retorna_decl -> . RETORNA ABRE_PAR numero_decl FECHA_PAR
+    (53) tipo -> . VAZIO
+    (54) tipo -> . INTEIRO
+    (55) tipo -> . FLUTUANTE
+
+    NOVA_LINHA      shift and go to state 120
+    SE              shift and go to state 43
+    REPITA          shift and go to state 38
+    ID              shift and go to state 33
+    LEIA            shift and go to state 28
+    ESCREVA         shift and go to state 36
+    RETORNA         shift and go to state 39
+    VAZIO           shift and go to state 2
+    INTEIRO         shift and go to state 9
+    FLUTUANTE       shift and go to state 4
+
+    declara_var                    shift and go to state 35
+    se_decl                        shift and go to state 34
+    tipo                           shift and go to state 31
+    leia_decl                      shift and go to state 42
+    escreva_decl                   shift and go to state 29
+    atribuicao_decl                shift and go to state 32
+    repita_decl                    shift and go to state 40
+    declaracao                     shift and go to state 50
+    retorna_decl                   shift and go to state 30
+
+state 120
+
+    (22) se_decl -> SE exp_decl ENTAO NOVA_LINHA sequencia_decl NOVA_LINHA SENAO NOVA_LINHA sequencia_decl NOVA_LINHA . FIM NOVA_LINHA
+
+    FIM             shift and go to state 121
+
+
+state 121
+
+    (22) se_decl -> SE exp_decl ENTAO NOVA_LINHA sequencia_decl NOVA_LINHA SENAO NOVA_LINHA sequencia_decl NOVA_LINHA FIM . NOVA_LINHA
+
+    NOVA_LINHA      shift and go to state 122
+
+
+state 122
+
+    (22) se_decl -> SE exp_decl ENTAO NOVA_LINHA sequencia_decl NOVA_LINHA SENAO NOVA_LINHA sequencia_decl NOVA_LINHA FIM NOVA_LINHA .
+
+    FIM             reduce using rule 22 (se_decl -> SE exp_decl ENTAO NOVA_LINHA sequencia_decl NOVA_LINHA SENAO NOVA_LINHA sequencia_decl NOVA_LINHA FIM NOVA_LINHA .)
+    SE              reduce using rule 22 (se_decl -> SE exp_decl ENTAO NOVA_LINHA sequencia_decl NOVA_LINHA SENAO NOVA_LINHA sequencia_decl NOVA_LINHA FIM NOVA_LINHA .)
+    REPITA          reduce using rule 22 (se_decl -> SE exp_decl ENTAO NOVA_LINHA sequencia_decl NOVA_LINHA SENAO NOVA_LINHA sequencia_decl NOVA_LINHA FIM NOVA_LINHA .)
+    ID              reduce using rule 22 (se_decl -> SE exp_decl ENTAO NOVA_LINHA sequencia_decl NOVA_LINHA SENAO NOVA_LINHA sequencia_decl NOVA_LINHA FIM NOVA_LINHA .)
+    LEIA            reduce using rule 22 (se_decl -> SE exp_decl ENTAO NOVA_LINHA sequencia_decl NOVA_LINHA SENAO NOVA_LINHA sequencia_decl NOVA_LINHA FIM NOVA_LINHA .)
+    ESCREVA         reduce using rule 22 (se_decl -> SE exp_decl ENTAO NOVA_LINHA sequencia_decl NOVA_LINHA SENAO NOVA_LINHA sequencia_decl NOVA_LINHA FIM NOVA_LINHA .)
+    RETORNA         reduce using rule 22 (se_decl -> SE exp_decl ENTAO NOVA_LINHA sequencia_decl NOVA_LINHA SENAO NOVA_LINHA sequencia_decl NOVA_LINHA FIM NOVA_LINHA .)
+    VAZIO           reduce using rule 22 (se_decl -> SE exp_decl ENTAO NOVA_LINHA sequencia_decl NOVA_LINHA SENAO NOVA_LINHA sequencia_decl NOVA_LINHA FIM NOVA_LINHA .)
+    INTEIRO         reduce using rule 22 (se_decl -> SE exp_decl ENTAO NOVA_LINHA sequencia_decl NOVA_LINHA SENAO NOVA_LINHA sequencia_decl NOVA_LINHA FIM NOVA_LINHA .)
+    FLUTUANTE       reduce using rule 22 (se_decl -> SE exp_decl ENTAO NOVA_LINHA sequencia_decl NOVA_LINHA SENAO NOVA_LINHA sequencia_decl NOVA_LINHA FIM NOVA_LINHA .)
+    NOVA_LINHA      reduce using rule 22 (se_decl -> SE exp_decl ENTAO NOVA_LINHA sequencia_decl NOVA_LINHA SENAO NOVA_LINHA sequencia_decl NOVA_LINHA FIM NOVA_LINHA .)
+    ATE             reduce using rule 22 (se_decl -> SE exp_decl ENTAO NOVA_LINHA sequencia_decl NOVA_LINHA SENAO NOVA_LINHA sequencia_decl NOVA_LINHA FIM NOVA_LINHA .)
+
