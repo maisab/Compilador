@@ -11,6 +11,11 @@ class Tree:
     def __str__(self):
         return self.type
 
+precedence = (
+    ('left', 'SOMA', 'SUB'),
+    ('left', 'MULT', 'DIVISAO'),
+)
+
 #uma funcao
 def p_programa_1(p):
     'programa : principal'
