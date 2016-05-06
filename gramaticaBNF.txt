@@ -1,0 +1,75 @@
+<programa> ::=   declaracaolara_var programa
+                            | func_loop principal
+                            | principal
+
+<principal> ::= tipo PRINCIPAL ( ) \n sequencia_decl FIM
+
+<func_loop> ::=  func_decl
+                            |  func_loop func_decl
+
+<func_decl> ::= tipo ID (parametro_decl) \n sequencia_decl FIM \n
+
+<sequencia_decl> ::= <declaracao>
+                                    | sequencia_decl declaracao
+
+<declaracao> ::= se_decl
+                            | repita_decl
+                            | atribuicao_decl
+                            | leia_decl
+                            | escreva_decl
+                            | declara_var
+                            | retorna_decl
+
+<retorna_decl> ::= RETORNA ( ID )
+                            | RETORNA ( numero_decl )
+                            | INTEIRO
+                            | FLUTUANTE
+
+<se_decl> ::= SE exp_decl ENTAO \n sequencia_decl \n FIM \n
+                        | SE exp_decl ENTAO \n sequencia_decl \n SENAO \n sequencia_decl \n FIM \n
+
+<repita_decl> ::= REPITA \n sequencia_decl ATE exp_decl \n
+
+<atribuicao_decl> ::= ID ATRIBUICAO exp_decl \n
+
+<leia_decl> ::= LEIA (ID) \n
+
+<escreva_decl> ::= ESCREVA ( exp_decl ) \n
+                                | ESCREVA ( chamada_func ) \n
+
+<chamada_func> ::= ID ( parametro_chama_func )
+
+<parametro_chama_func> ::= ID
+                                                | numero_decl
+                                                | parametro_chama_func ID
+
+<exp_decl> ::= simples_exp
+                          | simples_exp compara_op simples_exp
+
+<compara_op> ::= =
+                                | <
+                                | >
+                                | <=
+                                | >=
+
+<simples_exp> ::= termo
+                               | simples_exp soma_sub termo
+
+<soma_sub> ::= +
+                            | -
+
+<termo> ::= fator
+                      | termo mult_div fator
+                      | *
+                      | /
+
+<fator> ::= ID
+                    | numero_decl
+                    | ( exp_decl )
+
+<declara_var> ::= tipo : ID \n
+<parametro_decl> ::= parametro_decl , tipo : ID
+                                     | tipo : ID
+<tipo> ::= VAZIO
+                  | INTEIRO
+                  | FLUTUANTE
