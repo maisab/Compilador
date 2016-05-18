@@ -1,13 +1,12 @@
 inteiro: n
-inteiro fatorial(inteiro: n)
-    inteiro: fat
+inteiro fatorial(inteiro: n) {Erro comentario em uma linha}
     se n > 0 então {não calcula se n > 0}
         fat := 1
         repita
             fat := fat * n
             n := n - 1
         até n = 0
-        retorna(fat)
+        retorna(fat+1)
     senão
             retorna(0)
     fim
