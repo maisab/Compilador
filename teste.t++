@@ -1,17 +1,32 @@
+inteiro: g
+flutuante: x
 inteiro: n
-inteiro fatorial(inteiro: n) {Erro comentario em uma linha}
+inteiro fatorial(inteiro: n, flutuante: x) {Erro comentario em uma linha}
+inteiro : fat
+inteiro : m
+m := 1
     se n > 0 então {não calcula se n > 0}
         fat := 1
         repita
             fat := fat * n
+            n := m
+            x := m
+            m := x
+            g := 1
             n := n - 1
         até n = 0
-        retorna(fat+1)
+
+        retorna(fat)
     senão
             retorna(0)
     fim
 fim
 vazio principal()
+    n := 2.2
+    x := 1 
+    inteiro:h
+    h := 1
     leia(n)
-    escreva(fatorial(n))
+    fatorial(n,n)
+    escreva(fatorial(n,n))
 fim

@@ -1,0 +1,5 @@
+inteiro: g
+flutuante: x
+vazio principal()
+    inteiro: n
+fim

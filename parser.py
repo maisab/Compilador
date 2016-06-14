@@ -3,7 +3,7 @@ from lex import tokens
 
 class Tree:
 
-    def __init__(self, type_node, child=[], value=''):
+    def __init__(self, type_node, child=[], value=None):
         self.type = type_node
         self.child = child
         self.value = value
@@ -54,7 +54,7 @@ def p_func_loop_2(p):
 #funcao
 def p_func_decl(p):
     'func_decl : tipo ID ABRE_PAR parametro_decl FECHA_PAR NOVA_LINHA sequencia_decl FIM NOVA_LINHA'
-    p[0] = Tree('func_decl', [p[1], p[4], p[7]], [p[2]])
+    p[0] = Tree('func_decl', [p[1], p[4], p[7]], p[2])
 
 #uma declaracao
 def p_sequencia_decl_1(p):
@@ -95,29 +95,34 @@ def p_declaracao_7(p):
     'declaracao : retorna_decl'
     p[0] = Tree('declaracao_retorna', [p[1]])
 
+def p_declaracao_8(p):
+    'declaracao : chamada_func'
+    p[0] = Tree('declaracao_chamafunc', [p[1]])
+
+
 def p_retorna_decl_1(p):
-    'retorna_decl : RETORNA ABRE_PAR ID FECHA_PAR'
-    p[0] = Tree('retorna_id', [], [p[3]])
+    'retorna_decl : RETORNA ABRE_PAR ID FECHA_PAR NOVA_LINHA'
+    p[0] = Tree('retorna_id', [], p[3])
 
 def p_retorna_decl_2(p):
-    'retorna_decl : RETORNA ABRE_PAR numero_decl FECHA_PAR'
+    'retorna_decl : RETORNA ABRE_PAR numero_decl FECHA_PAR NOVA_LINHA'
     p[0] = Tree('retorna_numero', [p[3]])
 
 def p_numero_1(p):
     'numero_decl : INTEIRO'
-    p[0] = Tree('numero_decl_inteiro', [], [p[1]])
+    p[0] = Tree('numero_decl_inteiro', [], p[1])
 
 def p_numero_2(p):
     'numero_decl : FLUTUANTE'
-    p[0] = Tree('numero_decl_flutuante', [], [p[1]])
+    p[0] = Tree('numero_decl_flutuante', [], p[1])
 
 def p_se_decl_1(p):
-    'se_decl : SE exp_decl ENTAO NOVA_LINHA sequencia_decl NOVA_LINHA FIM NOVA_LINHA'
+    'se_decl : SE exp_decl ENTAO NOVA_LINHA sequencia_decl FIM NOVA_LINHA'
     p[0] = Tree('se_decl', [p[2], p[5]])
 
 def p_se_decl_2(p):
-    'se_decl : SE exp_decl ENTAO NOVA_LINHA sequencia_decl NOVA_LINHA SENAO NOVA_LINHA sequencia_decl NOVA_LINHA FIM NOVA_LINHA'
-    p[0] = Tree('se_decl_senao', [p[2], p[5], p[9]])
+    'se_decl : SE exp_decl ENTAO NOVA_LINHA sequencia_decl SENAO NOVA_LINHA sequencia_decl FIM NOVA_LINHA'
+    p[0] = Tree('se_decl_senao', [p[2], p[5], p[8]])
 
 def p_repita_decl(p):
     'repita_decl : REPITA NOVA_LINHA sequencia_decl ATE exp_decl NOVA_LINHA'
@@ -125,35 +130,43 @@ def p_repita_decl(p):
 
 def p_atribuicao_decl(p):
     'atribuicao_decl : ID ATRIBUICAO exp_decl NOVA_LINHA'
-    p[0] = Tree('atribuicao_decl', [p[3]], [p[1]])
+    p[0] = Tree('atribuicao_decl', [p[3]], p[1])
 
 def p_leia_decl(p):
     'leia_decl : LEIA ABRE_PAR ID FECHA_PAR NOVA_LINHA'
-    p[0] = Tree('leia_decl', [], [p[3]])
+    p[0] = Tree('leia_decl', [], p[3])
 
 def p_escreva_decl_1(p):
     'escreva_decl : ESCREVA ABRE_PAR exp_decl FECHA_PAR NOVA_LINHA'
     p[0] = Tree('escreva_decl_exp', [p[3]])
 
 def p_escreva_decl_2(p):
-    'escreva_decl : ESCREVA ABRE_PAR chamada_func FECHA_PAR NOVA_LINHA'
+    'escreva_decl : ESCREVA ABRE_PAR chamada_func_escreva FECHA_PAR NOVA_LINHA'
     p[0] = Tree('escreva_decl', [p[3]])
 
 def p_chamada_func(p):
-    'chamada_func : ID ABRE_PAR parametro_chama_func FECHA_PAR'
-    p[0] = Tree('chamada_func', [p[3]], [p[1]])
+    'chamada_func : ID ABRE_PAR parametro_chama_func FECHA_PAR NOVA_LINHA'
+    p[0] = Tree('chamada_func', [p[3]], p[1])
+
+def p_chamada_func_escreva(p):
+    'chamada_func_escreva : ID ABRE_PAR parametro_chama_func FECHA_PAR'
+    p[0] = Tree('chamada_func_escreva', [p[3]], p[1])
 
 def p_parametro_chama_func_1(p):
-    'parametro_chama_func : ID'
-    p[0] = Tree('parametro_chama_func', [], [p[1]])
+    'parametro_chama_func : parametro_chama_func VIRGULA ID'
+    p[0] = Tree('parametro_chama_func_paramentros', [p[1]], p[3])
 
 def p_parametro_chama_func_2(p):
-    'parametro_chama_func : numero_decl'
-    p[0] = Tree('parametro_chama_func_num', [p[1]])
+    'parametro_chama_func : parametro_chama_func VIRGULA numero_decl'
+    p[0] = Tree('parametro_chama_func_numeros', [p[1]], p[3])
 
 def p_parametro_chama_func_3(p):
-    'parametro_chama_func : parametro_chama_func ID'
-    p[0] = Tree('parametro_chama_func_paramentro', [p[1]], [p[2]])
+    'parametro_chama_func : ID'
+    p[0] = Tree('parametro_chama_func', [], p[1])
+
+def p_parametro_chama_func_4(p):
+    'parametro_chama_func : numero_decl'
+    p[0] = Tree('parametro_chama_func_num', [p[1]])
 
 def p_exp_decl_1(p):
     'exp_decl : simples_exp'
@@ -165,23 +178,23 @@ def p_exp_decl_2(p):
 
 def p_compara_op_1(p):
     'compara_op : IGUAL'
-    p[0] = Tree('compara_op_igual', [], [p[1]])
+    p[0] = Tree('compara_op_igual', [], p[1])
 
 def p_compara_op_2(p):
     'compara_op : MENOR'
-    p[0] = Tree('compara_op_menor', [], [p[1]])
+    p[0] = Tree('compara_op_menor', [], p[1])
 
 def p_compara_op_3(p):
     'compara_op : MAIOR'
-    p[0] = Tree('compara_op_maior', [], [p[1]])
+    p[0] = Tree('compara_op_maior', [], p[1])
 
 def p_compara_op_4(p):
     'compara_op : MENOR_IGUAL'
-    p[0] = Tree('compara_op_menorIgual', [], [p[1]])
+    p[0] = Tree('compara_op_menorIgual', [], p[1])
 
 def p_compara_op_5(p):
     'compara_op : MAIOR_IGUAL'
-    p[0] = Tree('compara_op_maiorIgual', [], [p[1]])
+    p[0] = Tree('compara_op_maiorIgual', [], p[1])
 
 def p_simples_exp_1(p):
     'simples_exp : termo'
@@ -193,11 +206,11 @@ def p_simples_exp_2(p):
 
 def p_soma_sub_1(p):
     'soma_sub : SOMA'
-    p[0] = Tree('soma_sub_soma', [], [p[1]])
+    p[0] = Tree('soma_sub_soma', [], p[1])
 
 def p_soma_sub_2(p):
     'soma_sub : SUB'
-    p[0] = Tree('soma_sub_subtracao', [], [p[1]])
+    p[0] = Tree('soma_sub_subtracao', [], p[1])
 
 def p_termo_1(p):
     'termo : fator'
@@ -209,15 +222,15 @@ def p_termo_2(p):
 
 def p_mult_div_1(p):
     'mult_div : MULT'
-    p[0] = Tree('mult_div_multiplicacao', [], [p[1]])
+    p[0] = Tree('mult_div_multiplicacao', [], p[1])
 
 def p_mult_div_2(p):
     'mult_div : DIVISAO'
-    p[0] = Tree('mult_div_divisao', [], [p[1]])
+    p[0] = Tree('mult_div_divisao', [], p[1])
 
 def p_fator_1(p):
     'fator : ID'
-    p[0] = Tree('fator_id', [], [p[1]])
+    p[0] = Tree('fator_id', [], p[1])
 
 def p_fator_2(p):
     'fator : numero_decl'
@@ -229,27 +242,27 @@ def p_fator_3(p):
 
 def p_declara_var(p):
     'declara_var : tipo DOIS_PONTOS ID NOVA_LINHA'
-    p[0] = Tree('declara_var', [p[1]], [p[3]])
+    p[0] = Tree('declara_var', [p[1]], p[3])
 
 def p_parametro_decl_1(p):
     'parametro_decl : parametro_decl  VIRGULA tipo DOIS_PONTOS ID'
-    p[0] = Tree('parametro_decl_loop', [p[1], p[3]], [p[5]])
+    p[0] = Tree('parametro_decl_loop', [p[1], p[3]], p[5])
 
 def p_parametro_decl_2(p):
     'parametro_decl : tipo DOIS_PONTOS ID'
-    p[0] = Tree('parametro_decl', [p[1]], [p[3]])
+    p[0] = Tree('parametro_decl', [p[1]], p[3])
 
 def p_tipo_1(p):
     'tipo : VAZIO'
-    p[0] = Tree('tipo_vazio', [], [p[1]])
+    p[0] = Tree('tipo_vazio', [], p[1])
 
 def p_tipo_2(p):
     'tipo : INTEIRO'
-    p[0] = Tree('tipo_inteiro', [], [p[1]])
+    p[0] = Tree('tipo_inteiro', [], p[1])
 
 def p_tipo_3(p):
     'tipo : FLUTUANTE'
-    p[0] = Tree('tipo_flutuante', [], [p[1]])
+    p[0] = Tree('tipo_flutuante', [], p[1])
 
 def p_error(p):
     if p:
