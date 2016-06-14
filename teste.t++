@@ -15,8 +15,7 @@ m := 1
             g := 1
             n := n - 1
         até n = 0
-
-        retorna(fat)
+        retorna(2.2)
     senão
             retorna(0)
     fim

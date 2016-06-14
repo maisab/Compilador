@@ -195,7 +195,16 @@ class Semantica():
 
     def retorna_decl(self, node):
         if (node.type == "retorna_numero"):
-            self.numero_decl(node.child[0])
+
+            tipo = self.numero_decl(node.child[0])
+
+            # if self.scope != "global":
+            #     if self.table[self.scope]["tipo"] == "INTEIRO" and tipo == 2:
+            #         print("Warning : Função do tipo INTEIRO retorna um valor FLUTUANTE : " + self.scope)
+
+            #     elif self.table[self.scope]["tipo"] == "FLUTUANTE" and tipo == 1:
+            #         print("Warning : Função do tipo INTEIRO retorna um valor FLUTUANTE : " + self.scope)
+
         else:
             return node.value #retorna o id
 
@@ -484,8 +493,8 @@ class Semantica():
 
     def fator(self, node, nomeVariavel) :
 
-        if(node.type == "fator_numero"):
-            if(nomeVariavel != "nada"): #atribuicao
+        if node.type == "fator_numero":
+            if nomeVariavel != "nada": #atribuicao
                 if self.scope + "." + nomeVariavel in self.table.keys():
                     tipo = self.numero_decl(node.child[0])
 
@@ -507,9 +516,9 @@ class Semantica():
             else:
                 self.numero_decl(node.child[0])
 
-        elif(node.type == "fator_id"):
+        elif node.type == "fator_id":
 
-            if(nomeVariavel != "nada"): #atribuicao
+            if nomeVariavel != "nada": #atribuicao
 
                 if self.scope + "." + node.value not in self.table.keys() and "global." + node.value not in self.table.keys():
                     print("Erro semântico : Variável não declarada : " + node.value)
@@ -571,6 +580,9 @@ class Semantica():
                             else:
                                 print("Erro semântico : Variável não inicializada : " + node.value)
                                 exit(1)
+
+            elif node.type == "fator_exp":
+                self.exp_decl(node.child[0], "nada")
 
             else:
                 if self.scope + "." + node.value not in self.table.keys() and "global." + node.value not in self.table.keys():
