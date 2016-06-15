@@ -2,4 +2,5 @@ inteiro: g
 flutuante: x
 vazio principal()
     inteiro: n
+    flutuante: x
 fim

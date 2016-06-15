@@ -9,7 +9,7 @@ m := 1
         fat := 1
         repita
             fat := fat * n
-            n := m
+            n := x + 1
             x := m
             m := x
             g := 1

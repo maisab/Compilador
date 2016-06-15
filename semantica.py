@@ -1,7 +1,7 @@
 from parser import *
 #import collections
 
-#Contar quantos parametros passa na função
+#falar no relatorio
 
 class Semantica():
 
@@ -253,18 +253,17 @@ class Semantica():
 #     p[0] = Tree('atribuicao_decl', [p[3]], [p[1]])
 
     def atribuicao_decl(self, node):
-
         if self.scope + "." + node.value not in self.table.keys() and "global." + node.value not in self.table.keys():
             print("Erro Semântico. Variável " + node.value + " não encontrada")
             exit(1)
 
         else :
             if self.scope + "." + node.value in self.table.keys():
-                self.table[self.scope + "." + node.value]["inicializada"] = True  #verificar isso
+                self.table[self.scope + "." + node.value]["inicializada"] = True 
                 self.exp_decl(node.child[0], node.value) #passa o nome da variável
 
             elif "global." + node.value in self.table.keys():
-                self.table["global." + node.value]["inicializada"] = True  #verificar isso
+                self.table["global." + node.value]["inicializada"] = True
                 self.exp_decl(node.child[0], node.value) #passa o nome da variável
 
 # def p_leia_decl(p):
@@ -449,7 +448,7 @@ class Semantica():
 #     p[0] = Tree('soma_sub_subtracao', [], [p[1]])
 
     def soma_sub(self, node):
-        return node.child[0]
+        return node.value
 
 # def p_termo_1(p):
 #     'termo : fator'
@@ -476,7 +475,7 @@ class Semantica():
 #     'mult_div : DIVISAO'
 #     p[0] = Tree('mult_div_divisao', [], [p[1]])
 
-    def mult_div(self, node) :
+    def mult_div(self, node):
             return node.value
 
 # def p_fator_1(p):
@@ -491,7 +490,7 @@ class Semantica():
 #     'fator : ABRE_PAR exp_decl FECHA_PAR'
 #     p[0] = Tree('fator_exp', [p[2]])
 
-    def fator(self, node, nomeVariavel) :
+    def fator(self, node, nomeVariavel):
 
         if node.type == "fator_numero":
             if nomeVariavel != "nada": #atribuicao
@@ -581,19 +580,14 @@ class Semantica():
                                 print("Erro semântico : Variável não inicializada : " + node.value)
                                 exit(1)
 
-            elif node.type == "fator_exp":
-                self.exp_decl(node.child[0], "nada")
-
             else:
                 if self.scope + "." + node.value not in self.table.keys() and "global." + node.value not in self.table.keys():
                     print("Erro semântico : Variável não declarada : " + node.value)
                     exit(1)
-        # else :
-
-        #     print(node.value)
-        #     if self.scope + "." + node.value not in self.table.keys() and "global." + node.value not in self.table.keys():
-        #         print("Erro semântico : Variável não declarada : " + node.value)
-
+                    
+                    return node.value
+        else :            
+            self.exp_decl(node.child[0], "nada")
 
 
 # def p_tipo_1(p):
@@ -641,6 +635,8 @@ class Semantica():
         self.table[self.scope + "." + node.value]["var"] = True
         self.table[self.scope + "." + node.value]["inicializada"] = False
         self.table[self.scope + "." + node.value]["tipo"] = tipo
+        self.table[self.scope + "." + node.value]["valor"] = None
+
 
 # def p_parametro_decl_1(p):
 #     'parametro_decl : parametro_decl  VIRGULA tipo DOIS_PONTOS ID'
@@ -673,6 +669,8 @@ class Semantica():
             self.table[self.scope + "." + node.value]["var"] = True
             self.table[self.scope + "." + node.value]["inicializada"] = True
             self.table[self.scope + "." + node.value]["tipo"] = tipo
+            self.table[self.scope + "." + node.value]["valor"] = None
+
             return self.parametro_decl(node.child[0]) + 1
 
         else: #se for só um parametro
@@ -695,6 +693,7 @@ class Semantica():
             self.table[self.scope + "." + node.value]["var"] = True
             self.table[self.scope + "." + node.value]["inicializada"] = True
             self.table[self.scope + "." + node.value]["tipo"] = tipo
+            self.table[self.scope + "." + node.value]["valor"] = None
 
             return 1
 
