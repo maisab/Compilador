@@ -176,11 +176,9 @@ class Gen():
 	def fator(self, node, nomeVariavel):
 
 		if node.type == "fator_numero":
-
 			numero = self.numero_decl(node.child[0])
 
-			if nomeVariavel != "nada.nada":
-				
+			if nomeVariavel != "nada.nada":				
 				if self.scope + "." + nomeVariavel in self.table.keys(): #se a variavel não é global
 					if(self.table[self.scope + "." + nomeVariavel]["tipo"] == "INTEIRO"):											
 						self.builder.store(ir.Constant(ir.IntType(32), numero), self.table[self.scope + "." + nomeVariavel]["valor"])
@@ -189,16 +187,33 @@ class Gen():
 						self.builder.store(ir.Constant(ir.FloatType(), numero), self.table[self.scope + "." + nomeVariavel]["valor"])
 
 				else:
-					print(numero)
 					if(self.table["global." + nomeVariavel]["tipo"] == "INTEIRO"):
-						print(self.table["global." + nomeVariavel]["tipo"])
-
 						self.builder.store(ir.Constant(ir.IntType(32), numero), self.table["global." + nomeVariavel]["valor"])
 
 					else:
 						self.builder.store(ir.Constant(ir.FloatType(), numero), self.table["global." + nomeVariavel]["valor"])
 
-		#fazer a condição para quando for atribuicao
+		elif node.type == "fator_id":
+
+				identificador = node.value
+
+				if self.scope + "." + nomeVariavel in self.table.keys(): #se a variavel não é global
+					if(self.table[self.scope + "." + nomeVariavel]["tipo"] == "INTEIRO"):											
+						self.builder.store(ir.Constant(ir.IntType(32), identificador), self.table[self.scope + "." + nomeVariavel]["valor"])
+
+					else:
+						self.builder.store(ir.Constant(ir.FloatType(), identificador), self.table[self.scope + "." + nomeVariavel]["valor"])
+
+				else:
+					if(self.table["global." + nomeVariavel]["tipo"] == "INTEIRO"):
+						self.builder.store(ir.Constant(ir.IntType(32), identificador), self.table["global." + nomeVariavel]["valor"])
+
+					else:
+						self.builder.store(ir.Constant(ir.FloatType(), identificador), self.table["global." + nomeVariavel]["valor"])
+		
+		elif node.type == "fator_exp":
+			self.exp_decl(node.child[0], nomeVariavel)
+
 
 		else:
 			if node.type == "fator_numero":
@@ -208,7 +223,7 @@ class Gen():
 				return self.builder.load(node.value) #carrega o valor
 
 			elif node.type == "fator_exp":
-				self.exp_decl(node.child[0], "nada.nada")
+				self.exp_decl(node.child[0], nomeVariavel)
 
 
 	def numero_decl(self, node):
