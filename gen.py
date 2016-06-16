@@ -44,7 +44,7 @@ class Gen():
 	def principal(self, node):
 		main = ir.Function(self.modulo, ir.FunctionType(ir.VoidType(), ()), name='main')
 		bb = main.append_basic_block('entry')
-		builder = ir.IRBuilder(bb)
+		self.builder = ir.IRBuilder(bb)
 
 		self.scope = "principal"
 		self.sequencia_decl(node.child[0])
@@ -65,8 +65,8 @@ class Gen():
 		# elif(node.type == "declaracao_repita"):
 		# 	self.repita_decl(node.child[0])
 
-		# elif(node.type == "declaracao_atribuicao"):
-		# 	self.atribuicao_decl(node.child[0])
+		elif(node.type == "declaracao_atribuicao"):
+			self.atribuicao_decl(node.child[0])
 
 		# elif(node.type == "declaracao_leia"):
 		# 	self.leia_decl(node.child[0])
@@ -81,16 +81,22 @@ class Gen():
 		# 	self.retorna_decl(node.child[0])
 
 	def declara_var(self, node):
-		# if(self.scope == "global"):
-		if self.table[self.scope + "." + node.value]["tipo"] == "INTEIRO":
-			ir.GlobalVariable(self.modulo, ir.IntType(32), self.scope + "." + node.value)
+		if(self.scope == "global"):
+			if self.table[self.scope + "." + node.value]["tipo"] == "INTEIRO":
+				self.table["global." + node.value]["valor"] = ir.GlobalVariable(self.modulo, ir.IntType(32), self.scope + "." + node.value)
 
-		elif self.table[self.scope + "." + node.value]["tipo"] == "FLUTUANTE":
-			ir.GlobalVariable(self.modulo, ir.FloatType(), self.scope + "." + node.value)
+			elif self.table[self.scope + "." + node.value]["tipo"] == "FLUTUANTE":
+				self.table["global." + node.value]["valor"] = ir.GlobalVariable(self.modulo, ir.FloatType(), self.scope + "." + node.value)
+		else:
+			if self.table[self.scope + "." + node.value]["tipo"] == "INTEIRO":
+				self.table[self.scope + "." + node.value]["valor"] = self.builder.alloca(ir.IntType(32), self.scope + "." + node.value)
 
+			else:
+				self.table[self.scope + "." + node.value]["valor"] = self.builder.alloca(ir.FloatType(), self.scope + "." + node.value)
+	
 	def se_decl(self, node):
 		# formula a condição
-		cond = self.exp_decl(node.child[0], "nada")
+		cond = self.exp_decl(node.child[0], "nada.nada")
 		# Estava dando erro
 		#bool_cond = self.builder.fcmp_unordered('==', cond,
 		#                              ir.Constant(ir.DoubleType(), 0), 'ifcond')
@@ -134,7 +140,7 @@ class Gen():
 			self.simples_exp(node.child[2], nomeVariavel)
 
 		else :
-			self.simples_exp(node.child[0])
+			self.simples_exp(node.child[0], nomeVariavel)
 
 	def simples_exp(self, node, nomeVariavel) :
 		if(node.child[0].type == "simples_exp_somasub"):
@@ -171,13 +177,26 @@ class Gen():
 
 		if node.type == "fator_numero":
 
+			numero = self.numero_decl(node.child[0])
 
-			#PAAREEEEIIII AQUIIIIIIIIIIIIIII
+			if nomeVariavel != "nada.nada":
+				
+				if self.scope + "." + nomeVariavel in self.table.keys(): #se a variavel não é global
+					if(self.table[self.scope + "." + nomeVariavel]["tipo"] == "INTEIRO"):											
+						self.builder.store(ir.Constant(ir.IntType(32), numero), self.table[self.scope + "." + nomeVariavel]["valor"])
 
-			if nomeVariavel != "nada":
-				if self.scope + "." + nomeVariavel in self.table.keys():
-					valor = builder.store(ir.Constant(ir.IntType(32), 7), a)
-					self.table[self.scope + "." + nomeVariavel]["valor"] = 
+					else:
+						self.builder.store(ir.Constant(ir.FloatType(), numero), self.table[self.scope + "." + nomeVariavel]["valor"])
+
+				else:
+					print(numero)
+					if(self.table["global." + nomeVariavel]["tipo"] == "INTEIRO"):
+						print(self.table["global." + nomeVariavel]["tipo"])
+
+						self.builder.store(ir.Constant(ir.IntType(32), numero), self.table["global." + nomeVariavel]["valor"])
+
+					else:
+						self.builder.store(ir.Constant(ir.FloatType(), numero), self.table["global." + nomeVariavel]["valor"])
 
 		#fazer a condição para quando for atribuicao
 
@@ -186,19 +205,14 @@ class Gen():
 				self.numero_decl(node.child[0])
 
 			elif node.type == "fator_id":
-				return builder.load(node.value) #carrega o valor
+				return self.builder.load(node.value) #carrega o valor
 
 			elif node.type == "fator_exp":
-				self.exp_decl(node.child[0], "nada")
+				self.exp_decl(node.child[0], "nada.nada")
 
 
 	def numero_decl(self, node):
-		# if node.type == "numero_decl_inteiro":
 		return node.value
-			# return ir.IntType(32)  #1 inteiro
-		# else:
-		# 	return node.value
-			# return ir.FloatType() #2 float
 
 	def compara_op(self, node):
 		if node.type == "compara_op_igual":
