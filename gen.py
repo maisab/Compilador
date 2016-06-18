@@ -12,6 +12,7 @@ class Gen():
 		self.modulo = ir.Module("programaModulo")
 		self.scope = "global"
 		self.inicioGen(self.tree)
+		self.func = None
 		print(self.modulo)
 
 	def inicioGen(self, node):
@@ -42,8 +43,8 @@ class Gen():
 			self.programa(node.child[1])
  
 	def principal(self, node):
-		main = ir.Function(self.modulo, ir.FunctionType(ir.VoidType(), ()), name='main')
-		bb = main.append_basic_block('entry')
+		self.func = ir.Function(self.modulo, ir.FunctionType(ir.VoidType(), ()), name='main')
+		bb = self.func.append_basic_block('entry')
 		self.builder = ir.IRBuilder(bb)
 
 		self.scope = "principal"
@@ -96,46 +97,54 @@ class Gen():
 	
 	def se_decl(self, node):
 		# formula a condição
-		cond = self.exp_decl(node.child[0], "nada.nada")
-		# Estava dando erro
-		#bool_cond = self.builder.fcmp_unordered('==', cond,
-		#                              ir.Constant(ir.DoubleType(), 0), 'ifcond')
+		condicao = self.exp_decl(node.child[0])
+
 		# adiciona os blocos básicos
 		then_block = self.func.append_basic_block('then')
-		else_block = self.func.append_basic_block('else')
+
+		if(len(node.child) == 3):
+			else_block = self.func.append_basic_block('else')
+
 		merge_block = self.func.append_basic_block('ifcont')
-		#self.builder.cbranch(bool_cond, then_block, else_block)
-		self.builder.cbranch(cond, then_block, else_block)
+
+		if(len(node.child) == 3):
+			self.builder.cbranch(condicao, then_block, else_block)
+		else:
+			self.builder.cbranch(condicao, then_block, merge_block)
+		
 		# emite o valor 'then'
 		self.builder.position_at_end(then_block)
-		# then_value = self.gen_expr(node.child[1])
-
-		then_value = self.declara_var(node.child[0])
+		then_value = self.exp_decl(node.child[0])
 
 		self.builder.branch(merge_block)
 		then_block = self.builder.basic_block
 
 		# emite o valor 'else'
+		if(len(node.child) == 3):
+			self.builder.position_at_end(else_block)
+			else_value = self.exp_decl(node.child[0])
 
-		self.builder.position_at_end(else_block)
-		# else_value = self.gen_expr(node.child[2])
-		else_value = self.declara_var(node.child[0])
 		self.builder.branch(merge_block)
-		else_block = self.builder.basic_block
+
+		if(len(node.child) == 3):
+			else_block = self.builder.basic_block
+
 		# finalizando o código e acionando os nós PHI
 		self.builder.position_at_end(merge_block)
+
 		phi = self.builder.phi(ir.DoubleType(), 'iftmp')
 		phi.add_incoming(then_value, then_block)
-		phi.add_incoming(else_value, else_block)
+
+		if(len(node.child) == 3):
+			phi.add_incoming(else_value, else_block)
+
 		return phi
 
 	def atribuicao_decl(self, node):
 		
 		resultado = self.exp_decl(node.child[0])
-		# print(resultado)
 
 		if self.scope + "." + node.value in self.table.keys(): 
-
 			if self.table[self.scope + "." + node.value]["tipo"] == "INTEIRO":	
 				self.builder.store(ir.Constant(ir.IntType(32), self.float_to_int(resultado)), self.table[self.scope + "." + node.value]["valor"])
 
@@ -147,8 +156,6 @@ class Gen():
 				self.builder.store(ir.Constant(ir.IntType(32), self.float_to_int(resultado)), self.table["global." + node.value]["valor"])
 				
 			elif self.table["global." + node.value]["tipo"] == "FLUTUANTE":
-				print("entrou float global")
-				print(resultado)
 				self.builder.store(resultado, self.table["global." + node.value]["valor"])
 
 	def float_to_int(self, num):

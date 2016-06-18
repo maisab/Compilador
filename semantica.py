@@ -232,7 +232,7 @@ class Semantica():
 
     def se_decl(self, node):
         if(len(node.child) == 2):
-            self.exp_decl(node.child[0])
+            self.exp_decl(node.child[0], "nada")
             self.sequencia_decl(node.child[1])
 
         else:
