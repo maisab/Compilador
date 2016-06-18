@@ -284,7 +284,7 @@ class Semantica():
 #     p[0] = Tree('escreva_decl', [p[3]])
 
     def escreva_decl(self, node):
-        if(node.child[0].type == "escreva_decl_exp"):
+        if(node.type == "escreva_decl_exp"):
             self.exp_decl(node.child[0], "nada")
 
         else :
@@ -391,7 +391,7 @@ class Semantica():
 #     p[0] = Tree('exp_decl_compara', [p[1], p[2], p[3]])
 
     def exp_decl(self, node, nomeVariavel) :
-        if( node.child[0].type == "exp_decl_compara" ):
+        if( node.type == "exp_decl_compara" ):
             self.simples_exp(node.child[0], nomeVariavel)
             self.compara_op(node.child[1])
             self.simples_exp(node.child[2], nomeVariavel)
@@ -431,7 +431,7 @@ class Semantica():
 #     p[0] = Tree('simples_exp_somasub', [p[1], p[2], p[3]])
 
     def simples_exp(self, node, nomeVariavel) :
-        if(node.child[0].type == "simples_exp_somasub"):
+        if(node.type == "simples_exp_somasub"):
             self.simples_exp(node.child[0], nomeVariavel)
             self.soma_sub(node.child[1])
             self.termo(node.child[2], nomeVariavel)
@@ -459,7 +459,7 @@ class Semantica():
 #     p[0] = Tree('termo_multdiv', [p[1], p[2], p[3]])
 
     def termo(self, node, nomeVariavel) :
-        if(node.child[0].type == "termo_multdiv"):
+        if(node.type == "termo_multdiv"):
             self.termo(node.child[0], nomeVariavel)
             self.mult_div(node.child[1])
             self.fator(node.child[2], nomeVariavel)

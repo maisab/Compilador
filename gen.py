@@ -82,11 +82,11 @@ class Gen():
 
 	def declara_var(self, node):
 		if(self.scope == "global"):
-			if self.table[self.scope + "." + node.value]["tipo"] == "INTEIRO":
-				self.table["global." + node.value]["valor"] = ir.GlobalVariable(self.modulo, ir.IntType(32), self.scope + "." + node.value)
+			if self.table["global." + node.value]["tipo"] == "INTEIRO":
+				self.table["global." + node.value]["valor"] = ir.GlobalVariable(self.modulo, ir.IntType(32), "global." + node.value)
 
-			elif self.table[self.scope + "." + node.value]["tipo"] == "FLUTUANTE":
-				self.table["global." + node.value]["valor"] = ir.GlobalVariable(self.modulo, ir.FloatType(), self.scope + "." + node.value)
+			elif self.table["global." + node.value]["tipo"] == "FLUTUANTE":
+				self.table["global." + node.value]["valor"] = ir.GlobalVariable(self.modulo, ir.FloatType(), "global." + node.value)
 		else:
 			if self.table[self.scope + "." + node.value]["tipo"] == "INTEIRO":
 				self.table[self.scope + "." + node.value]["valor"] = self.builder.alloca(ir.IntType(32), self.scope + "." + node.value)
@@ -130,120 +130,117 @@ class Gen():
 		return phi
 
 	def atribuicao_decl(self, node):
-		self.exp_decl(node.child[0], node.value) #passa o nome da variável
+		
+		resultado = self.exp_decl(node.child[0])
+		# print(resultado)
 
+		if self.scope + "." + node.value in self.table.keys(): 
 
-	def exp_decl(self, node, nomeVariavel) :
-		if( node.child[0].type == "exp_decl_compara" ):
-			self.simples_exp(node.child[0], nomeVariavel)
-			self.compara_op(node.child[1])
-			self.simples_exp(node.child[2], nomeVariavel)
+			if self.table[self.scope + "." + node.value]["tipo"] == "INTEIRO":	
+				self.builder.store(ir.Constant(ir.IntType(32), self.float_to_int(resultado)), self.table[self.scope + "." + node.value]["valor"])
 
-		else :
-			self.simples_exp(node.child[0], nomeVariavel)
-
-	def simples_exp(self, node, nomeVariavel) :
-		if(node.child[0].type == "simples_exp_somasub"):
-			self.simples_exp(node.child[0], nomeVariavel)
-			self.soma_sub(node.child[1])
-			self.termo(node.child[2], nomeVariavel)
+			elif self.table[self.scope + "." + node.value]["tipo"] == "FLUTUANTE":											
+				self.builder.store(resultado, self.table[self.scope + "." + node.value]["valor"])
 
 		else :
-			self.termo(node.child[0], nomeVariavel)
+			if self.table["global." + node.value]["tipo"] == "INTEIRO":
+				self.builder.store(ir.Constant(ir.IntType(32), self.float_to_int(resultado)), self.table["global." + node.value]["valor"])
+				
+			elif self.table["global." + node.value]["tipo"] == "FLUTUANTE":
+				print("entrou float global")
+				print(resultado)
+				self.builder.store(resultado, self.table["global." + node.value]["valor"])
+
+	def float_to_int(self, num):
+		return self.builder.fptosi(num, ir.IntType(32))
+
+	def int_to_float(self, num):
+		return self.builder.sitofp(num, ir.FloatType())
+
+	def exp_decl(self, node):
+		if( node.type == "exp_decl_compara" ):
+			left = self.simples_exp(node.child[0])
+			op = self.compara_op(node.child[1])
+			right = self.simples_exp(node.child[2])
+
+			if op == '=':
+				return self.builder.fcmp_unordered('==', left, right, 'cmptmp')
+			elif op == '>':
+				return self.builder.fcmp_unordered('>', left, right, 'cmptmp')
+			elif op == '>=':
+				return self.builder.fcmp_unordered('>=', left, right, 'cmptmp')
+			elif op == '<':
+				return self.builder.fcmp_unordered('<', left, right, 'cmptmp')
+			elif op == '<=':
+				return self.builder.fcmp_unordered('<=', left, right, 'cmptmp')
+
+		else :
+			return self.simples_exp(node.child[0])
+
+	def simples_exp(self, node) :
+		if(node.type == "simples_exp_somasub"):
+			print("entrou soma")
+			left = self.simples_exp(node.child[0])
+			op = self.soma_sub(node.child[1])
+			right = self.termo(node.child[2])
+
+			if op == "+": 
+				return self.builder.fadd(left, right, 'addtmp')
+
+			elif op == "-":
+				return self.builder.fsub(left, right, 'subtmp')
+
+		else :
+			return self.termo(node.child[0])
 
 	def soma_sub(self, node):
-		if node.value == "SOMA":
-			return self.builder.fadd(left, right, 'addtmp')
+		return node.value
 
-		elif node.value == "SUB":
-			return self.builder.fsub(left, right, 'subtmp')
+	def termo(self, node):
+		if(node.type == "termo_multdiv"):
+			left = self.termo(node.child[0])
+			op = self.mult_div(node.child[1])
+			right = self.fator(node.child[2])
 
-	def termo(self, node, nomeVariavel) :
-		if(node.child[0].type == "termo_multdiv"):
-			self.termo(node.child[0], nomeVariavel)
-			self.mult_div(node.child[1])
-			self.fator(node.child[2], nomeVariavel)
+			if op == "*": 
+				return self.builder.fmul(left, right, 'multmp')
+
+			elif op == "/":
+				return self.builder.fdiv(left, right, 'divtmp')
 
 		else:
-			self.fator(node.child[0], nomeVariavel)	
+			return self.fator(node.child[0])	
 
 	def mult_div(self, node) :
-		if node.value == "MULT":
-			return self.builder.fmul(left, right, 'multmp')		
-		elif node.value == "DIVISAO":
-			return self.builder.fdiv(left, right, 'divtmp')
+		return node.value
 
-	def fator(self, node, nomeVariavel):
-
+	def fator(self, node):
 		if node.type == "fator_numero":
-			numero = self.numero_decl(node.child[0])
-
-			if nomeVariavel != "nada.nada":				
-				if self.scope + "." + nomeVariavel in self.table.keys(): #se a variavel não é global
-					if(self.table[self.scope + "." + nomeVariavel]["tipo"] == "INTEIRO"):											
-						self.builder.store(ir.Constant(ir.IntType(32), numero), self.table[self.scope + "." + nomeVariavel]["valor"])
-
-					else:
-						self.builder.store(ir.Constant(ir.FloatType(), numero), self.table[self.scope + "." + nomeVariavel]["valor"])
-
-				else:
-					if(self.table["global." + nomeVariavel]["tipo"] == "INTEIRO"):
-						self.builder.store(ir.Constant(ir.IntType(32), numero), self.table["global." + nomeVariavel]["valor"])
-
-					else:
-						self.builder.store(ir.Constant(ir.FloatType(), numero), self.table["global." + nomeVariavel]["valor"])
+			return self.numero_decl(node.child[0])
 
 		elif node.type == "fator_id":
+			if self.scope + "." + node.value in self.table.keys():
+				if self.table[self.scope + "." + node.value]["tipo"] == "INTEIRO":
+					return self.int_to_float(self.builder.load(self.table[self.scope + "." + node.value]["valor"])) #carrega o valor
+				else: 
+					return self.builder.load(self.table[self.scope + "." + node.value]["valor"])
 
-				identificador = node.value
-
-				if self.scope + "." + nomeVariavel in self.table.keys(): #se a variavel não é global
-					if(self.table[self.scope + "." + nomeVariavel]["tipo"] == "INTEIRO"):											
-						self.builder.store(ir.Constant(ir.IntType(32), identificador), self.table[self.scope + "." + nomeVariavel]["valor"])
-
-					else:
-						self.builder.store(ir.Constant(ir.FloatType(), identificador), self.table[self.scope + "." + nomeVariavel]["valor"])
-
+			else: 
+				if self.table["global." + node.value]["tipo"] == "INTEIRO":
+					return self.int_to_float(self.builder.load(self.table["global." + node.value]["valor"])) #carrega o valor
 				else:
-					if(self.table["global." + nomeVariavel]["tipo"] == "INTEIRO"):
-						self.builder.store(ir.Constant(ir.IntType(32), identificador), self.table["global." + nomeVariavel]["valor"])
+					return self.builder.load(self.table["global." + node.value]["valor"])
 
-					else:
-						self.builder.store(ir.Constant(ir.FloatType(), identificador), self.table["global." + nomeVariavel]["valor"])
-		
+
 		elif node.type == "fator_exp":
-			self.exp_decl(node.child[0], nomeVariavel)
-
-
-		else:
-			if node.type == "fator_numero":
-				self.numero_decl(node.child[0])
-
-			elif node.type == "fator_id":
-				return self.builder.load(node.value) #carrega o valor
-
-			elif node.type == "fator_exp":
-				self.exp_decl(node.child[0], nomeVariavel)
+			return self.exp_decl(node.child[0])
 
 
 	def numero_decl(self, node):
-		return node.value
+		return ir.Constant(ir.FloatType(), node.value)
 
 	def compara_op(self, node):
-		if node.type == "compara_op_igual":
-			return self.builder.fcmp_unordered('==', left, right, 'cmptmp')
-
-		elif node.type == "compara_op_maior":
-			return self.builder.fcmp_unordered('>', left, right, 'cmptmp')
-
-		elif node.type == "compara_op_menor":
-			return self.builder.fcmp_unordered('<', left, right, 'cmptmp')
-
-		elif node.type == "compara_op_menorIgual":
-			return self.builder.fcmp_unordered('<=', left, right, 'cmptmp')
-
-		elif node.type == "compara_op_maiorIgual":
-			return self.builder.fcmp_unordered('>=', left, right, 'cmptmp')
+		return node.value
 
 
 if __name__ == '__main__':
