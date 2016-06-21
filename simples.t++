@@ -5,7 +5,10 @@ vazio principal()
     flutuante: x
     n := 0
 	se n > 0 então
+
     	x := 2.2
 
+    senão 
+    	h := 1
     fim 
 fim

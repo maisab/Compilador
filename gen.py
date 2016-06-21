@@ -123,10 +123,7 @@ class Gen():
 		if(len(node.child) == 3):
 			self.builder.position_at_end(else_block)
 			else_value = self.exp_decl(node.child[0])
-
-		self.builder.branch(merge_block)
-
-		if(len(node.child) == 3):
+			self.builder.branch(merge_block)
 			else_block = self.builder.basic_block
 
 		# finalizando o código e acionando os nós PHI
