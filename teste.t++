@@ -1,7 +1,7 @@
 inteiro: g
 flutuante: x
 inteiro: n
-inteiro fatorial(inteiro: n, flutuante: x) {Erro comentario em uma linha}
+inteiro fatorial(inteiro: n, flutuante: x, inteiro: h) {Erro comentario em uma linha}
 inteiro : fat
 inteiro : m
 m := 1

@@ -1,14 +1,5 @@
 inteiro: g
 flutuante: h
 vazio principal()
-    inteiro: n
-    flutuante: x
-    n := 0
-	se n > 0 então
-
-    	x := 2.2
-
-    senão 
-    	h := 1
-    fim 
+		escreva(2)		
 fim

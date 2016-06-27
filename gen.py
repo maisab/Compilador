@@ -11,8 +11,11 @@ class Gen():
 		self.builder = None
 		self.modulo = ir.Module("programaModulo")
 		self.scope = "global"
-		self.inicioGen(self.tree)
 		self.func = None
+		self.printf_f = ir.Function(self.modulo, ir.FunctionType(ir.FloatType(), [ir.FloatType()]), "printf_f")
+		self.scanf_f = ir.Function(self.modulo, ir.FunctionType(ir.FloatType(), []), "scanf_f")
+		self.inicioGen(self.tree)
+		# print(self.printf_f)
 		print(self.modulo)
 
 	def inicioGen(self, node):
@@ -34,9 +37,9 @@ class Gen():
 			self.principal(node.child[0])
 			self.scope = "global"
 
-		# if(node.type  == "programa_funcao"):
-		# 	self.func_loop(node.child[0])
-		# 	self.principal(node.child[1])
+		if(node.type  == "programa_funcao"):
+			self.func_loop(node.child[0])
+			self.principal(node.child[1])
 
 		if(node.type  == "programa_varglobal"):
 			self.declara_var(node.child[0])
@@ -50,7 +53,21 @@ class Gen():
 		self.scope = "principal"
 		self.sequencia_decl(node.child[0])
 
+		self.builder.ret_void()
+
 		self.scope = "global"
+
+	def func_loop(self, node):
+		if(len(node.child) == 2) :
+			self.func_loop(node.child[0])
+			self.func_decl(node.child[1])
+		else:
+			self.func_decl(node.child[0])
+
+	def func_decl(self, node):
+		nome = node.value
+		self.scope = node.value
+			
 
 	def sequencia_decl(self, node):
 		if(node.type == "sequencia_decl_loop"):
@@ -72,8 +89,8 @@ class Gen():
 		# elif(node.type == "declaracao_leia"):
 		# 	self.leia_decl(node.child[0])
 
-		# elif(node.type == "declaracao_escreva"):
-		# 	self.escreva_decl(node.child[0])
+		elif(node.type == "declaracao_escreva"):
+			self.escreva(node.child[0])
 
 		elif(node.type == "declaracao_declaravar"):
 			self.declara_var(node.child[0])
@@ -245,6 +262,9 @@ class Gen():
 
 	def compara_op(self, node):
 		return node.value
+
+	def escreva(self, node):
+		self.builder.call(self.printf_f, [ir.Constant(ir.FloatType(), 2)])
 
 
 if __name__ == '__main__':
