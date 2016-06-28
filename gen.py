@@ -12,14 +12,13 @@ class Gen():
 		self.modulo = ir.Module("programaModulo")
 		self.scope = "global"
 		self.func = None
-		self.printf_f = ir.Function(self.modulo, ir.FunctionType(ir.FloatType(), [ir.FloatType()]), "printf_f")
-		self.scanf_f = ir.Function(self.modulo, ir.FunctionType(ir.FloatType(), []), "scanf_f")
+		self.printf = ir.Function(self.modulo, ir.FunctionType(ir.FloatType(), [ir.FloatType()]), "printf_f")
+		self.scanf = ir.Function(self.modulo, ir.FunctionType(ir.FloatType(), [ir.FloatType()]), "scanf_f")
 		self.inicioGen(self.tree)
 		# print(self.printf_f)
 		print(self.modulo)
 
 	def inicioGen(self, node):
-
 		if self.tree.type == "programa_principal":
 			self.principal(self.tree.child[0])
 
@@ -113,10 +112,8 @@ class Gen():
 				self.table[self.scope + "." + node.value]["valor"] = self.builder.alloca(ir.FloatType(), self.scope + "." + node.value)
 	
 	def se_decl(self, node):
-		# formula a condição
 		condicao = self.exp_decl(node.child[0])
 
-		# adiciona os blocos básicos
 		then_block = self.func.append_basic_block('then')
 
 		if(len(node.child) == 3):
@@ -124,26 +121,23 @@ class Gen():
 
 		merge_block = self.func.append_basic_block('ifcont')
 
-		if(len(node.child) == 3):
+		if(len(node.child) == 3): #se a condição do then for verdadeira
 			self.builder.cbranch(condicao, then_block, else_block)
 		else:
 			self.builder.cbranch(condicao, then_block, merge_block)
 		
-		# emite o valor 'then'
-		self.builder.position_at_end(then_block)
+		self.builder.position_at_end(then_block) #valores do else
 		then_value = self.exp_decl(node.child[0])
 
 		self.builder.branch(merge_block)
 		then_block = self.builder.basic_block
 
-		# emite o valor 'else'
-		if(len(node.child) == 3):
+		if(len(node.child) == 3): #valores do else
 			self.builder.position_at_end(else_block)
 			else_value = self.exp_decl(node.child[0])
 			self.builder.branch(merge_block)
 			else_block = self.builder.basic_block
 
-		# finalizando o código e acionando os nós PHI
 		self.builder.position_at_end(merge_block)
 
 		phi = self.builder.phi(ir.DoubleType(), 'iftmp')
@@ -151,11 +145,9 @@ class Gen():
 
 		if(len(node.child) == 3):
 			phi.add_incoming(else_value, else_block)
-
 		return phi
 
-	def atribuicao_decl(self, node):
-		
+	def atribuicao_decl(self, node):		
 		resultado = self.exp_decl(node.child[0])
 
 		if self.scope + "." + node.value in self.table.keys(): 
@@ -252,10 +244,8 @@ class Gen():
 				else:
 					return self.builder.load(self.table["global." + node.value]["valor"])
 
-
 		elif node.type == "fator_exp":
 			return self.exp_decl(node.child[0])
-
 
 	def numero_decl(self, node):
 		return ir.Constant(ir.FloatType(), node.value)
@@ -264,7 +254,24 @@ class Gen():
 		return node.value
 
 	def escreva(self, node):
-		self.builder.call(self.printf_f, [ir.Constant(ir.FloatType(), 2)])
+		result = self.exp_decl(node.child[0])
+		self.builder.call(self.scanf, [result])
+
+	def leia(self, node):
+
+		variavel = self.builder.call(self.scanf, [])
+
+		if self.scope + "." + node.value in self.table.keys():
+			if self.table[self.scope + "." + node.value]["tipo"] == INTEIRO:
+				self.builder.store(float_to_int(variavel), self.tree[self.escopo + "." + node.value]["valor"])
+
+			else:
+				self.builder.store(variavel, self.tree[self.escopo + '.' + node.value]["valor"])
+		else:
+			if self.table["global." + node.value]["tipo"] == INTEIRO:
+				self.builder.store(float_to_int(variavel), self.tree["global." + node.value]["valor"])
+			else:
+				self.builder.store(variavel, self.tree["global." + node.value]["valor"])
 
 
 if __name__ == '__main__':
